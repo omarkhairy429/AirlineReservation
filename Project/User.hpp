@@ -11,7 +11,10 @@ protected:
     string password;
 
 public:
+    User() = default;
+    User(string userName, string password);
     virtual bool Login(string userName, string password) = 0;
+
 };
 
 #endif

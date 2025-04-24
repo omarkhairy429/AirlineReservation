@@ -11,7 +11,7 @@
 
 class Admin : public User {
 private:
-    vector<UserStruct> users;
+    vector<Passenger> users;
     void loadUsers();
     void saveUsers();
     // string hashPassword(const string &password);
@@ -22,6 +22,7 @@ public:
     bool addUser(string userName, string password);
     bool updateUser(string userName, string newPassword);
     bool deleteUser(string userName);
+    bool logUser(string userName, string password);
 };
 
 #endif

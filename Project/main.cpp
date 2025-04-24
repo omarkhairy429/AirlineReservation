@@ -11,19 +11,16 @@ using namespace std;
 
 int main() {
 
-  // Passenger p1;
-  // p1.SignIn("Mohamed", "123");
-
   Admin a1;
-  Passenger p1;
-  p1.Login("Omar", "123");
+  
+  a1.updateUser("Omar khairy", "123");
+
+
 
   // if(a1.Login("adminUser", "12345")) {
   //   a1.updateUser("Ahmed", "#Omarqwer1#232310");
   // }
 
-  
-    
 
     // User user1;
     // user1.Login("Omar", "123");
