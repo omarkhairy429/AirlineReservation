@@ -1,0 +1,10 @@
+[
+    {
+        "arrivalTime": "2025-06-10-23:00",
+        "depratureTime": "2025-06-10 20:30",
+        "destination": "Kuwait",
+        "flightNumber": "AG700",
+        "origin": "Egypt",
+        "status": "Scheduled"
+    }
+]

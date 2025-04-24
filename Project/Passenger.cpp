@@ -12,3 +12,7 @@ bool Passenger::Login(string userName, string password) {
     return(a1.logUser(userName, password));
 }
 
+void Passenger:: searchFlights(string origin, string destination, string depratureDate) {
+    
+}
+
