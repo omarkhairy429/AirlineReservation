@@ -1,9 +1,11 @@
 [
     {
-        "arrivalTime": "2025-06-10-23:00",
-        "depratureTime": "2025-06-10 20:30",
+        "Available seats": 177,
+        "Seats": 180,
+        "arrivalTime": "2025-06-23 23:00",
+        "depratureTime": "2025-06-23 20:00",
         "destination": "Kuwait",
-        "flightNumber": "AG700",
+        "flightNumber": "ABC",
         "origin": "Egypt",
         "status": "Scheduled"
     }

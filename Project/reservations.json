@@ -1,0 +1,23 @@
+[
+    {
+        "flightNumber": "ABC",
+        "passengerID": 2,
+        "paymentDetails": "101",
+        "paymentMethod": "Cash",
+        "seatNumber": "12B"
+    },
+    {
+        "flightNumber": "ABC",
+        "passengerID": 1,
+        "paymentDetails": "123456",
+        "paymentMethod": "Cash",
+        "seatNumber": "13C"
+    },
+    {
+        "flightNumber": "ABC",
+        "passengerID": 1,
+        "paymentDetails": "12345",
+        "paymentMethod": "PayPal",
+        "seatNumber": "16F"
+    }
+]

@@ -1,10 +1,16 @@
 [
     {
-        "password": "123",
-        "userName": "Omar khairy"
+        "email": "omar.fayed.5832@gmail.com",
+        "loyalty_points": 0,
+        "password": "Omarqwer1",
+        "userName": "Omar Khairy",
+        "user_id": 1
     },
     {
-        "password": "123",
-        "userName": "Omar Fayed"
+        "email": "mohamed.salah@gmail.com",
+        "loyalty_points": 0,
+        "password": "2018",
+        "userName": "Mohamed Salah",
+        "user_id": 2
     }
 ]

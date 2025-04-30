@@ -15,63 +15,35 @@ bool Admin::Login(string userName, string password) {
 }
 
 // Admin logs a user
-bool Admin::addUser(string userName, string password) {
-    loadUsers();
+bool Admin::addUser(string userName, string password, int user_id, string email, int loyalty_points) {
+    loadUsers(users, "user.json");
 
-    /* Check if username is not taken */
-    auto it = find_if(users.begin(), users.end(), [&](const shared_ptr<User>& user) {
+    // Check if the user already exists
+    auto it = find_if(users.begin(), users.end(), [&](const shared_ptr<User> &user) {
         return user->userName == userName;
     });
 
-    /* Name is already taken */
     if (it != users.end()) {
-        return false;
+        return false; // User already exists
     }
 
-    // Create a shared pointer for a new Passenger object
-    users.push_back(make_shared<Passenger>(userName, password));
-    saveUsers();
-    return true;
-}
-
-void Admin::saveUsers() {
-    json j;
-    for (const auto& user : users) {
-        j.emplace_back(*user); 
-    }
+    // Create a new Passenger object with all the required data
+    auto newUser = make_shared<Passenger>(userName, password, user_id, email, loyalty_points);
     
-    ofstream file("user.json");
-    file << j.dump(4);
+
+    // Add the new user to the users list
+    users.push_back(newUser);
+
+    // Save users to the file
+    saveUsers(users, "user.json");
+    return true;
+
 }
 
-void Admin::loadUsers() {
-    ifstream file("user.json");
-
-    if (!file) {
-        cerr << "Error: Unable to open user.json file." << endl;
-        return;
-    }
-
-    try {
-        json j;
-        file >> j;
-
-        if (j.is_array()) {
-            users.clear();
-            for (const auto& item : j) {
-                users.push_back(make_shared<Passenger>(item.get<Passenger>()));
-            }
-        } else {
-            cerr << "Error: JSON format is incorrect. Expected an array." << endl;
-        }
-    } catch (const json::exception& e) {
-        cerr << "Error: Failed to parse user.json file. Exception: " << e.what() << endl;
-    }
-}
 
 
 bool Admin::deleteUser(string userName) {
-    loadUsers();
+    loadUsers(users, "user.json");
 
     auto it = find_if(users.begin(), users.end(), [&](const shared_ptr<User>& user) {
         return user->userName == userName;
@@ -79,7 +51,7 @@ bool Admin::deleteUser(string userName) {
 
     if (it != users.end()) {
         users.erase(it);
-        saveUsers();
+        saveUsers(users, "user.json");
         return true;
     }
 
@@ -87,7 +59,7 @@ bool Admin::deleteUser(string userName) {
 }
 
 bool Admin::updateUser(string userName, string newPassword) {
-    loadUsers();
+    loadUsers(users, "user.json");
 
     auto it = find_if(users.begin(), users.end(), [&](shared_ptr<User>& user) {
         return user->userName == userName;
@@ -100,7 +72,7 @@ bool Admin::updateUser(string userName, string newPassword) {
         }
 
         (*it)->password = newPassword;
-        saveUsers();
+        saveUsers(users, "user.json");
         return true;
     }
 
@@ -109,7 +81,7 @@ bool Admin::updateUser(string userName, string newPassword) {
 }
 
 bool Admin::logUser(string userName, string password) {
-    loadUsers();
+    loadUsers(users, "user.json");
     auto it = find_if(users.begin(), users.end(), [&](const shared_ptr<User>& user) {
         return user->userName == userName && user->password == password;
     });
@@ -130,43 +102,10 @@ bool Admin::logUser(string userName, string password) {
 
 /***************************************************  Start of Admin Flight Relation ***************************************************/
 
-void Admin::loadFlights() {
-    ifstream file("Flights.json");
-    if (!file) {
-        ofstream createFile("Flights.json");  // Create the file
-        return; 
-    }
-
-    try {
-        json j;
-        file >> j;
-
-        if (j.is_array()) {
-            Flights.clear();
-            for (const auto& item : j) {
-                Flights.emplace_back(make_shared<Flight>(item.get<Flight>()));
-            }
-        } else {
-            cerr << "Error: JSON format is incorrect. Expected an array." << endl;
-        }
-    } catch (const json::exception& e) {
-        cerr << "Error: Failed to parse user.json file. Exception: " << e.what() << endl;
-    }
-}
-
-void Admin::saveFlights() {
-    json j;
-    for (const auto& flight : Flights) {
-        j.emplace_back(*flight); 
-    }
-    
-    ofstream file("Flights.json");
-    file << j.dump(4);
-}
 
 
-bool Admin::addFlight(string flightNumber, string origin, string destination, string depratureTime, string arrivalTime, string status) {
-    loadFlights();
+bool Admin::addFlight(string flightNumber, string origin, string destination, string depratureTime, string arrivalTime, int seats, string status) {
+    loadFlights(Flights, "Flights.json");
 
     /* Check if flight already added */
     auto it = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
@@ -179,14 +118,15 @@ bool Admin::addFlight(string flightNumber, string origin, string destination, st
     }
 
     // Create a shared pointer for a new Passenger object
-    Flights.emplace_back(make_shared<Flight>(flightNumber, origin, destination, depratureTime, arrivalTime, status));
-    saveFlights();
+    Flights.emplace_back(make_shared<Flight>(flightNumber, origin, destination, depratureTime, arrivalTime, seats, status));
+    
+    saveFlights(Flights, "Flights.json");
     return true;
 }
 
 bool Admin::updateFlight(string flightNumber, string newOrigin, string newDestination,
-    string newDepartureTime, string newArrivalTime, string newStatus) {
-    loadFlights();
+    string newDepartureTime, string newArrivalTime,int newSeats, string newStatus) {
+    loadFlights(Flights, "Flights.json");
 
     auto it = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
     return f->flightNumber == flightNumber;
@@ -200,15 +140,16 @@ bool Admin::updateFlight(string flightNumber, string newOrigin, string newDestin
     (*it)->destination = newDestination;
     (*it)->depratureTime = newDepartureTime;
     (*it)->arrivalTime = newArrivalTime;
+    (*it)->total_seats = newSeats;
     (*it)->status = newStatus;
 
-    saveFlights();
+    saveFlights(Flights, "Flights.json");
     return true;
 }
 
 
 bool Admin::deleteFlight(string flightNumber) {
-    loadFlights();
+    loadFlights(Flights, "Flights.json");
 
     auto it = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
         return f->flightNumber == flightNumber;
@@ -219,7 +160,7 @@ bool Admin::deleteFlight(string flightNumber) {
     }
 
     Flights.erase(it);
-    saveFlights();
+    saveFlights(Flights, "Flights.json");
     return true;
 }
 
