@@ -1,6 +1,6 @@
 [
     {
-        "balance": 480.0,
+        "balance": 1480.0,
         "email": "omar.khairy.5832@gmail.com",
         "loyalty_points": 30,
         "password": "#Omar123",
@@ -14,5 +14,13 @@
         "password": "#salah#",
         "userName": "Mohamed Salah",
         "user_id": 4
+    },
+    {
+        "balance": 0.0,
+        "email": "wael@gmail.com",
+        "loyalty_points": 0,
+        "password": "3\u0004\u0003\rD^G",
+        "userName": "Wael Fekry",
+        "user_id": 5
     }
 ]

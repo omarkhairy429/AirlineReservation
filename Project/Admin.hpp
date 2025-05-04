@@ -29,8 +29,9 @@ private:
     vector<shared_ptr<Maintenance>> maintenances;
     vector<shared_ptr<Reservation>> reservations;
 
-    // string hashPassword(const string &password);
-    // bool verifyPassword(const string &password, const string &hashedPassword);
+    /* Password Encryption */
+    string encryptPassword(const string& password, const string & key = "default_key");
+    string decryptPassword(const string& encryptedPassword, const string& key = "default_key");
 
 public:
     // User

@@ -1,0 +1,20 @@
+[
+    {
+        "departureDateTime": "2025-07-23 14:00",
+        "destination": "Spain",
+        "flightNumber": "ABC124",
+        "origin": "London",
+        "passengerName": "Omar Fayed",
+        "reservationID": "R123",
+        "seatNumber": "12A"
+    },
+    {
+        "departureDateTime": "2025-09-11 14:00",
+        "destination": "Canada",
+        "flightNumber": "ABC125",
+        "origin": "USA",
+        "passengerName": "Omar Fayed",
+        "reservationID": "R111",
+        "seatNumber": "17B"
+    }
+]

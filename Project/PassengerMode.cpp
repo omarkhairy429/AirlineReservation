@@ -25,6 +25,7 @@ void PassengerMode::startPassengerMode() {
         passenger.setEmail(it->getEmail());
         passenger.setLoyaltyPoints(it->getLoyaltyPoints());
         passenger.setBalance(it->getBalance());
+        passenger.setUserName(it->getUserName());
         
         while (true) {
             int choice;
@@ -32,7 +33,8 @@ void PassengerMode::startPassengerMode() {
             cout << "1. Search Flights" << endl;
             cout << "2. Check In" << endl;
             cout << "3. View Reservations" << endl;
-            cout << "4. Logout" << endl;
+            cout << "4. Deposit Money" << endl;
+            cout << "5. Logout" << endl;
             cout << "Enter your choice: ";
             cin >> choice;
 
@@ -41,13 +43,17 @@ void PassengerMode::startPassengerMode() {
                     searchFlights(passenger); 
                     break;
                 case 2:
-                    //checkIn(passenger); // Assuming checkIn is implemented in Passenger class
+                    checkIn(passenger); 
                     break;
                 case 3:
                     cout << endl << endl;
                     viewReservations(passenger);
                     break;
                 case 4:
+                    cout << endl;
+                    depositMoney(passenger);
+                    break;
+                case 5:
                     cout << "Logging out..." << endl;
                     return;
                 default:
@@ -144,5 +150,33 @@ void PassengerMode::viewReservations(Passenger& passenger) {
     // If no reservations are found, display a message
     if (!found) {
         cout << "No reservations found." << endl;
+    }
+}
+
+/******************************************* Check In  *******************************************/
+void PassengerMode::checkIn(Passenger& passenger) {
+
+    cout << "Enter Reservation ID: ";
+    string reservationId;
+    cin >> reservationId;
+    cout << endl << endl; 
+    if (passenger.checkIn(reservationId, passenger.getUserId())) {
+        cout << "Check-in successful!" << endl;
+    } else {
+        cout << "Check-in failed." << endl;
+    }
+}
+
+
+/******************************************* Deposit Money  *******************************************/
+void PassengerMode::depositMoney(Passenger& passenger) {
+    double amount;
+    cout << "Enter amount to deposit: ";
+    cin >> amount;
+
+    if (passenger.deposit(amount, passenger.getUserName())) {
+        cout << "Deposit successful!" << endl << endl;
+    } else {
+        cout << "Deposit failed." << endl;
     }
 }

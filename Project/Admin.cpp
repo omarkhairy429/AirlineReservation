@@ -6,6 +6,21 @@
 using namespace std;
 using json = nlohmann::json;
 
+/********************************************* Password Encryption *********************************************/
+string Admin::encryptPassword(const string& password, const string& key) {
+    string encrypted = password;
+    for (size_t i = 0; i < password.size(); ++i) {
+        encrypted[i] ^= key[i % key.size()];
+    }
+    return encrypted;
+}
+
+string Admin::decryptPassword(const string& encryptedPassword, const string& key) {
+    // XOR decryption is the same as encryption
+    return encryptPassword(encryptedPassword, key);
+}
+
+
 
 /* Start of Admin User relation */
 
@@ -36,7 +51,10 @@ bool Admin::addUser(string userName, string password, int user_id, string email,
         return false;
     }
 
-    auto newUser = std::make_shared<Passenger>(userName, password, user_id, email, loyalty_points);
+    // Encrypt the password before saving
+    string encryptedPassword = encryptPassword(password);
+
+    auto newUser = std::make_shared<Passenger>(userName, encryptedPassword, user_id, email, loyalty_points);
     newUser->setBalance(0);
     users.push_back(newUser);
     saveUsers(users, "user.json");
@@ -86,13 +104,22 @@ bool Admin::updateUser(string userName, string newPassword) {
 
 bool Admin::logUser(string userName, string password) {
     loadUsers(users, "user.json");
+
     auto it = find_if(users.begin(), users.end(), [&](const shared_ptr<User>& user) {
-        return user->userName == userName && user->password == password;
+        return user->userName == userName;
     });
 
     if (it != users.end()) {
-        cout << "User Logged in Successfully" << endl;
-        return true;
+        // Decrypt the stored password
+        string decryptedPassword = decryptPassword((*it)->password);
+
+        if (decryptedPassword == password) {
+            cout << "User Logged in Successfully" << endl;
+            return true;
+        } else {
+            cout << "Wrong Password" << endl;
+            return false;
+        }
     }
 
     cout << "Wrong User name or Password" << endl;

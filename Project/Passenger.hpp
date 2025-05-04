@@ -4,6 +4,8 @@
 #include "User.hpp"
 #include "json.hpp"
 #include <vector>
+#include "checkIn.hpp"
+#include "Reservation.hpp"
 
 class Admin;
 
@@ -15,6 +17,8 @@ private:
     std::string email;
     int loyalty_points;
     double balance;
+    vector<shared_ptr<CheckIn>> checks;
+    vector<shared_ptr<Reservation>> reservations; 
 
 public:
     Passenger() : balance(0) {}
@@ -38,6 +42,7 @@ public:
 
     // Additional functionality
     bool deposit(double amount, std::string username);
+    bool checkIn(const string & reservationId, int user_id);
 
     // JSON Serialization
     friend void to_json(json& j, const Passenger& p) {

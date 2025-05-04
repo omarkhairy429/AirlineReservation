@@ -7,6 +7,7 @@
 #include "UserDatabaseUtils.hpp"
 
 
+
 class PassengerMode {
 public:
     void startPassengerMode();  // Function to start the passenger mode
@@ -18,6 +19,8 @@ private:
     void bookFlight(Passenger& passenger);  // Function to book a flight
     void searchFlights(Passenger& passenger);  // Function to search for flights
     void viewReservations(Passenger& passenger);  // Function to view reservations
+    void checkIn(Passenger& passenger);  // Function to check in for a flight
+    void depositMoney(Passenger& passenger);  // Function to deposit money
 
 };
 
