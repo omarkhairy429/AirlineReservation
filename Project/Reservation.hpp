@@ -28,12 +28,14 @@ public:
     void setSeatNumber(const string& seat);
     void setPaymentMethod(const string& method);
     void setPaymentDetails(const string& details);
+    void setReservationID(const string& reservationID);
 
     // Getters
     int getPassengerID() const;
     string getFlightNumber() const;
     string getSeatNumber() const;
     string getPaymentMethod() const;
+    string getReservationID() const;
     //string getPaymentDetails() const;
 
     // Friend functions to handle JSON conversion

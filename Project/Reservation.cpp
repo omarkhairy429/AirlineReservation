@@ -21,6 +21,10 @@ void Reservation::setPaymentDetails(const string& details) {
     paymentDetails = details;
 }
 
+void Reservation::setReservationID(const string& reservationID) {
+    this->reservationID = reservationID;
+}
+
 // Getters
 int Reservation::getPassengerID() const {
     return passengerID;
@@ -36,6 +40,10 @@ string Reservation::getSeatNumber() const {
 
 string Reservation::getPaymentMethod() const {
     return paymentMethod;
+}
+
+string Reservation:: getReservationID() const {
+    return reservationID;
 }
 
 

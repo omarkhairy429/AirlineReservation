@@ -3,7 +3,6 @@
 
 #include "Passenger.hpp"
 #include "User.hpp"
-#include "UserStruct.hpp"
 #include "json.hpp"
 #include <vector>
 #include <string>
@@ -15,6 +14,8 @@
 #include "Pilot.hpp"
 #include "FlightAttendant.hpp"
 #include "DatabaseUtils.hpp"
+#include "Maintenance.hpp"
+#include "Reservation.hpp"
 
 
 
@@ -25,6 +26,8 @@ private:
     vector<shared_ptr<Pilot>> pilots;
     vector<shared_ptr<FlightAttendant>> flightAttendants;
     vector<shared_ptr<Aircraft>> aircrafts;
+    vector<shared_ptr<Maintenance>> maintenances;
+    vector<shared_ptr<Reservation>> reservations;
 
     // string hashPassword(const string &password);
     // bool verifyPassword(const string &password, const string &hashedPassword);
@@ -50,6 +53,7 @@ public:
     // Aircraft
     bool addAircraft(string model, string id, int capacity, double maxSpeed);
     bool assignAircraftToFlight(string aircraftID, string flightID);
+    bool addMaintenance(string aircraftID, string maintenanceType, string startDate, string endDate, string description, double estimatedCost);
     friend class AdminMode; // Allow AdminMode to access private members of Admin
 };
 

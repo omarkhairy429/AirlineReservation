@@ -154,18 +154,52 @@ bool Admin::updateFlight(string flightNumber, string newOrigin, string newDestin
 
 
 bool Admin::deleteFlight(string flightNumber) {
+    // Load flights and reservations
     loadData<Flight>(Flights, "Flights.json");
+    loadData<Reservation>(reservations, "Reservations.json");
+    loadUsers(users, "user.json");
 
-    auto it = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
+    // Find the flight
+    auto flightIt = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
         return f->flightNumber == flightNumber;
     });
 
-    if (it == Flights.end()) {
+    if (flightIt == Flights.end()) {
         return false; // Flight not found
     }
 
-    Flights.erase(it);
+    // Delete all reservations attached to this flight and refund money
+    auto reservationIt = reservations.begin();
+    while (reservationIt != reservations.end()) {
+        if ((*reservationIt)->getFlightNumber() == flightNumber) {
+            // Refund money to the user
+            auto userIt = find_if(users.begin(), users.end(), [&](const shared_ptr<User>& user) {
+                auto it = dynamic_pointer_cast<Passenger>(user);
+                return it->getUserId() == (*reservationIt)->getPassengerID();
+            });
+
+            if (userIt != users.end()) {
+                auto passenger = dynamic_pointer_cast<Passenger>(*userIt);
+                if (passenger) {
+                    passenger->setBalance(passenger->getBalance() + (*flightIt)->getPrice());
+                }
+            }
+
+            // Erase the reservation
+            reservationIt = reservations.erase(reservationIt);
+        } else {
+            ++reservationIt;
+        }
+    }
+
+    // Save updated reservations and users
+    saveData<Reservation>(reservations, "Reservations.json");
+    saveUsers(users, "user.json");
+
+    // Delete the flight
+    Flights.erase(flightIt);
     saveData<Flight>(Flights, "Flights.json");
+
     return true;
 }
 
@@ -361,6 +395,27 @@ bool Admin::assignAircraftToFlight(string aircraftID, string flightID) {
     outFile << setw(4) << allAssignments << endl;
     outFile.close();
 
+    return true;
+}
+
+/*************************************************** Add Maintenance ***************************************************/
+bool Admin::addMaintenance(string aircraftID, string maintenanceType, string startDate, string endDate, string description, double estimatedCost) {
+    loadData<Maintenance>(maintenances, "Maintenance.json");
+
+    // Check if the aircraft ID already exists in the maintenance records
+    auto it = find_if(maintenances.begin(), maintenances.end(), [&](const shared_ptr<Maintenance>& m) {
+        return m->getAircraftId() == aircraftID;
+    });
+
+    if (it != maintenances.end()) {
+        cout << "This Aircraft ID already exists in the maintenance records." << endl;
+        return false;
+    }
+
+    // Create a new Maintenance object and add it to the vector
+    auto newMaintenance = make_shared<Maintenance>(aircraftID, maintenanceType, startDate, endDate, description, estimatedCost);
+    maintenances.push_back(newMaintenance);
+    saveData<Maintenance>(maintenances, "Maintenance.json");
     return true;
 }
 

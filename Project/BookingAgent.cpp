@@ -18,7 +18,7 @@ bool BookingAgent::Login(string userName, string password) {
 /******************************** Start of Booking Agent Flight Operations  **************************************************/
 
 /* Search in Flights database  */
-void BookingAgent::searchFlights(string origin, string destination, string depratureDate) {
+bool BookingAgent::searchFlights(string origin, string destination, string depratureDate) {
     loadData<Flight>(Flights, "Flights.json");
     int counter = 0;
     for(const auto& flight : Flights) {
@@ -35,7 +35,9 @@ void BookingAgent::searchFlights(string origin, string destination, string depra
     }
     if (counter == 0) {
         cout << "There is no available Flights right now -_-" << endl;
+        return false;
     }
+    return true;
 }
 
 
@@ -115,11 +117,22 @@ bool BookingAgent::bookFlight(int passengerID, string flightNumber, string seat,
         cout << "You don't have enough money" << endl;
         return false;
     }
+    // Update passenger's balance and loyalty points
+    passengerIt->loyalty_points += 10;
     passengerIt->balance = (passengerIt->balance) - ((*flight_it)->price);
     (*flight_it)->totalRevenue = (*flight_it)->totalRevenue + ((*flight_it)->price);
 
 
     reservations.emplace_back(std::make_shared<Reservation>(passengerID, flightNumber, seat, paymentMethod, paymentDetails, reservationID));
+
+    Payment* payment = PaymentFactory::createPayment(paymentMethod);
+    if (payment) {
+        cout << "Payment method: " << payment->getType() << endl;
+        delete payment; 
+    } else {
+        cout << "Invalid payment method" << endl;
+        return false;
+    }
 
     (*flight_it)->availableSeats--;
     saveData<Reservation>(reservations, "reservations.json");
@@ -181,6 +194,7 @@ bool BookingAgent::cancelReservation(string reservationID) {
     passenger->balance += price; // Refund the price to the passenger
     (*flight_it)->availableSeats++; // Increase available seats by 1
     (*flight_it)->totalRevenue -= price; // Decrease total revenue by the price
+    passenger->loyalty_points -= 10; // Decrease loyalty points by 10
 
     // Remove the reservation
     reservations.erase(reservation_it);

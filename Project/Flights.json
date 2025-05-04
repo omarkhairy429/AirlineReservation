@@ -4,18 +4,6 @@
         "Price": 120.0,
         "Revenue": 120.0,
         "Seats": 180,
-        "arrivalTime": "2020-06-25 22:00",
-        "depratureTime": "2025-06-25 19:00",
-        "destination": "Egypt",
-        "flightNumber": "ABC123",
-        "origin": "Germany",
-        "status": "Scheduled"
-    },
-    {
-        "Available seats": 180,
-        "Price": 120.0,
-        "Revenue": 0.0,
-        "Seats": 180,
         "arrivalTime": "2025-07-23 15:00",
         "depratureTime": "2025-07-23 14:00",
         "destination": "Spain",
@@ -24,9 +12,9 @@
         "status": "Scheduled"
     },
     {
-        "Available seats": 200,
+        "Available seats": 198,
         "Price": 200.0,
-        "Revenue": 0.0,
+        "Revenue": 400.0,
         "Seats": 200,
         "arrivalTime": "2025-09-11 16:00",
         "depratureTime": "2025-09-11 14:00",

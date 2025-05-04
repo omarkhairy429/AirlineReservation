@@ -24,7 +24,8 @@ void AdminMode::startAdminMode() {
             cout << "2. Manage Aircrafts" << endl;
             cout << "3. Manage Users" << endl;
             cout << "4. Manage Crew Assignments" << endl;
-            cout << "5. Logout" << endl;
+            cout << "5. Generate Reports" << endl;
+            cout << "6. Logout" << endl;
             cout << "Enter your choice: ";
             cin >> choice;
 
@@ -42,7 +43,11 @@ void AdminMode::startAdminMode() {
                     manageCrewAssignments(admin);
                     break;
                 case 5:
+                    GenerateReports(admin);
+                    return;
+                case 6:
                     cout << "Logging out..." << endl;
+                    cout << endl << endl;
                     return;
                 default:
                     cout << "Invalid choice. Please try again." << endl;
@@ -197,7 +202,10 @@ void AdminMode::manageAircrafts(Admin &admin) {
         cout << "\n--- Manage Aircrafts ---" << endl;
         cout << "1. Add New Aircraft" << endl;
         cout << "2. Assign Aircraft to Flight" << endl;
-        cout << "3. Back to Main Menu" << endl;
+        cout << "3. Add Maintenance" << endl;
+        cout  << "4. View All Aircrafts" << endl;
+        cout << "5. View Maintenance Schedules" << endl;
+        cout << "6. Back to Main Menu" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -209,6 +217,21 @@ void AdminMode::manageAircrafts(Admin &admin) {
                 assignAircraft(admin);
                 break;
             case 3:
+                cout << endl << endl;
+                addMaintenance(admin);
+                cout << endl << endl;
+                return;
+            case 4:
+                cout << endl << endl;
+                displayAircrafts(admin);
+                cout << endl << endl;
+                break;
+            case 5:
+                cout << endl << endl;
+                displayMaintenanceSchedules(admin);
+                cout << endl << endl;
+                break;
+            case 6:
                 return;
             default:
                 cout << "Invalid choice. Please try again." << endl;
@@ -293,19 +316,25 @@ void AdminMode::manageUsers(Admin &admin) {
 }
 
 void AdminMode::addUser(Admin &admin) {
+    cout << endl << endl;
     displayUsers(admin);
     string userName, password, email;
     int user_id, loyalty_points;
 
     cout << "--- Add New User ---" << endl;
     cout << "Enter Username: ";
-    cin >> userName;
+    cin.ignore(); // Clear the leftover newline from previous input
+    getline(cin, userName); // Allow spaces in username
+
     cout << "Enter Password: ";
     cin >> password;
+
     cout << "Enter User ID: ";
     cin >> user_id;
+
     cout << "Enter Email: ";
     cin >> email;
+
     cout << "Enter Loyalty Points: ";
     cin >> loyalty_points;
 
@@ -317,6 +346,7 @@ void AdminMode::addUser(Admin &admin) {
 }
 
 void AdminMode::updateUser(Admin &admin) {
+    cout << endl << endl;
     displayUsers(admin);
     string userName, newPassword;
     cout << "--- Update User ---" << endl;
@@ -324,7 +354,7 @@ void AdminMode::updateUser(Admin &admin) {
     cin.ignore(); // Clear input buffer
     getline(cin, userName); // Read full line, including spaces
     cout << "Enter New Password: ";
-    getline(cin, newPassword); // Read full line for password
+    cin >> newPassword;
 
     if (admin.updateUser(userName, newPassword)) {
         cout << "User updated successfully!" << endl;
@@ -498,4 +528,90 @@ void AdminMode::displayAircraftAssignments(Admin &admin) {
     }
 }
 
+/**************************** Display Maintenance Schedules ************************/
+void AdminMode::displayMaintenanceSchedules(Admin &admin) {
+    // use loadData<Maintenance> to load the maintenance schedules
+    cout << "--- Display All Maintenance Schedules ---" << endl;
+    loadData<Maintenance>(admin.maintenances, "Maintenance.json");
+    for (const auto &maintenance : admin.maintenances) {
+        cout << "Aircraft ID: " << maintenance->getAircraftId() << endl;
+        cout << "Maintenance Type: " << maintenance->getMaintenanceType() << endl;
+        cout << "Start Date: " << maintenance->getStartDate() << endl;
+        cout << "End Date: " << maintenance->getEndDate() << endl;
+        cout << "Description: " << maintenance->getDescription() << endl;
+        cout << "Estimated Cost: $" << maintenance->getEstimatedCost() << endl;
+        cout << "------------------------" << endl;
+    }
+}
+
+/**************************** Add Maintenance ************************/
+void AdminMode::addMaintenance(Admin &admin) {
+    string aircraftID, maintenanceType, startDate, endDate, description;
+    double estimatedCost;
+
+    cout << endl << endl;
+    displayAircrafts(admin);
+    cout << endl << endl;
+    displayMaintenanceSchedules(admin);
+    cout << endl << endl;
+
+    cout << "--- Add Maintenance ---" << endl;
+    cout << "Enter Aircraft ID: ";
+    cin >> aircraftID;
+    cout << "Enter Maintenance Type: Motor/Avionics/Other: ";
+    cin >> maintenanceType;
+    cout << "Enter Start Date (YYYY-MM-DD): ";
+    cin >> startDate;
+    cout << "Enter End Date (YYYY-MM-DD): ";
+    cin >> endDate;
+    cout << "Enter Description: ";
+    cin.ignore(); // Clear the newline character from the input buffer
+    getline(cin, description); // Allow spaces in description
+    cout << "Enter Estimated Cost: ";
+    cin >> estimatedCost;
+
+    if (admin.addMaintenance(aircraftID, maintenanceType, startDate, endDate, description, estimatedCost)) {
+        cout << "Maintenance added successfully!" << endl;
+    } else {
+        cout << "Failed to add maintenance. Aircraft ID may not exist." << endl;
+    }
+}
+
+
+
+
+/********************************************************* Generate Reports *********************************************************/
+void AdminMode::GenerateReports(Admin &admin) {
+    while (true) {
+        int choice;
+        cout << "\n--- Generate Reports ---" << endl;
+        cout << "1. Maintenance Report" << endl;
+        cout << "2. Flight Report" << endl;
+        cout << "3. User Report" << endl;
+        cout << "4. Back to Main Menu" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << endl << endl;
+                displayMaintenanceSchedules(admin);
+                break;
+            case 2:
+                cout << endl << endl;
+                displayFlights(admin);
+                break;
+            case 3:
+                cout << endl << endl;
+                displayUsers(admin);
+                break;
+            case 4:
+                cout << endl << endl;
+                return;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+    
+}
 

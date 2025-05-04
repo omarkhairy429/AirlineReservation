@@ -8,6 +8,7 @@
 #include "Admin_mode.hpp"
 #include "Agent_mode.hpp"
 #include "Pilot.hpp"
+#include "PassengerMode.hpp"
 using namespace std;
 
 
@@ -19,6 +20,7 @@ using namespace std;
 int main() {
     AdminMode admin;
     AgentMode agent;
+    PassengerMode passenger;
     while(true) {
       int choice;
       cout << "Welcome to Airline Reservation and Management System" << endl;
@@ -39,7 +41,7 @@ int main() {
               agent.startAgentMode();
               break;
           case 3:
-              //passenger();
+              passenger.startPassengerMode();
               break;
           case 4:
             return 0;

@@ -34,7 +34,4 @@ bool Passenger::deposit(double amount, string username) {
 
 
 
-void Passenger:: searchFlights(string origin, string destination, string depratureDate) {
-    
-}
 

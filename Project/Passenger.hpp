@@ -23,7 +23,6 @@ public:
         : User(userName, password), user_id(user_id), email(email), loyalty_points(loyalty_points), balance(0) {}
 
     bool Login(std::string userName, std::string password) override;
-    void searchFlights(std::string origin, std::string destination, std::string departureDate);
 
     // Getters
     int getUserId() const { return user_id; }

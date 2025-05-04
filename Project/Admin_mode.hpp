@@ -40,6 +40,11 @@ private:
     void displayFlightAttendants(Admin &admin);  
     void displayCrewAssignments(Admin &admin);  
     void displayAircraftAssignments(Admin &admin);
+    void displayMaintenanceSchedules(Admin &admin);
+    void addMaintenance(Admin &admin);
+
+    /* Reports */
+    void GenerateReports(Admin &admin);  // Function to generate reports
 };
 
 #endif // ADMIN_MODE_HPP

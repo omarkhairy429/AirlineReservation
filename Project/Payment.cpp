@@ -21,15 +21,15 @@ void CreditCard::pay() {
 }
 
 std::string CreditCard::getType() {
-    return "CreditCard";
+    return "Credit Card";
 }
 
 Payment* PaymentFactory::createPayment(const std::string& type) {
     if (type == "Cash") {
         return new Cash();
-    } else if (type == "Paypal") {
+    } else if (type == "PayPal") {
         return new Paypal();
-    } else if (type == "CreditCard") {
+    } else if (type == "Credit Card") {
         return new CreditCard();
     } else {
         return nullptr;

@@ -9,6 +9,7 @@
 #include "Reservation.hpp"
 #include "UserDatabaseUtils.hpp"
 #include "DatabaseUtils.hpp"
+#include "Payment.hpp"
 
 
 
@@ -24,7 +25,7 @@ class BookingAgent: public User {
     public:
 
         bool Login(string userName, string password);
-        void searchFlights(string origin, string destination, string depratureDate);
+        bool searchFlights(string origin, string destination, string depratureDate);
         bool bookFlight(int passengerID, string flightNumber, string seat, string paymentMethod, string paymentDetails, string reservationID);
         bool cancelReservation(string reservationID);
 
