@@ -4,7 +4,7 @@
 #include <algorithm>
 
 bool BookingAgent::Login(string userName, string password) {
-    if (userName == "agentUser" && password == "12345") {
+    if (userName == "agent" && password == "12345") {
         this->userName = userName;
         this->password = password;
         return true;
@@ -19,7 +19,7 @@ bool BookingAgent::Login(string userName, string password) {
 
 /* Search in Flights database  */
 void BookingAgent::searchFlights(string origin, string destination, string depratureDate) {
-    loadFlights(Flights, "Flights.json");
+    loadData<Flight>(Flights, "Flights.json");
     int counter = 0;
     for(const auto& flight : Flights) {
         // Example output
@@ -51,8 +51,8 @@ void BookingAgent::searchFlights(string origin, string destination, string depra
 
 bool BookingAgent::bookFlight(int passengerID, string flightNumber, string seat, string paymentMethod, string paymentDetails, string reservationID) {
     loadUsers(users, "user.json");
-    loadFlights(Flights, "Flights.json");
-    loadReservations(reservations, "reservations.json");
+    loadData<Flight>(Flights, "Flights.json");
+    loadData<Reservation>(reservations, "reservations.json");
 
     auto user_it = find_if(users.begin(), users.end(), [&](const shared_ptr<User> user) {
         auto u = dynamic_pointer_cast<Passenger>(user);
@@ -122,8 +122,8 @@ bool BookingAgent::bookFlight(int passengerID, string flightNumber, string seat,
     reservations.emplace_back(std::make_shared<Reservation>(passengerID, flightNumber, seat, paymentMethod, paymentDetails, reservationID));
 
     (*flight_it)->availableSeats--;
-    saveReservations(reservations, "reservations.json");
-    saveFlights(Flights, "Flights.json");
+    saveData<Reservation>(reservations, "reservations.json");
+    saveData<Flight>(Flights, "Flights.json");
     saveUsers(users, "user.json");
     return true;
 }
@@ -132,8 +132,8 @@ bool BookingAgent::bookFlight(int passengerID, string flightNumber, string seat,
 /***************************************************** Cancel Reservation ******************************************************/
 bool BookingAgent::cancelReservation(string reservationID) {
     loadUsers(users, "user.json");
-    loadFlights(Flights, "Flights.json");
-    loadReservations(reservations, "reservations.json");
+    loadData<Flight>(Flights, "Flights.json");
+    loadData<Reservation>(reservations, "reservations.json");
 
     // Find the reservation by ID
     auto reservation_it = find_if(reservations.begin(), reservations.end(), [&](const shared_ptr<Reservation>& res) {
@@ -186,8 +186,8 @@ bool BookingAgent::cancelReservation(string reservationID) {
     reservations.erase(reservation_it);
 
     // Save the updated data
-    saveReservations(reservations, "reservations.json");
-    saveFlights(Flights, "Flights.json");
+    saveData<Reservation>(reservations, "reservations.json");
+    saveData<Flight>(Flights, "Flights.json");
     saveUsers(users, "user.json");
 
     cout << "Reservation canceled successfully!" << endl;

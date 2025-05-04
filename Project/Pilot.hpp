@@ -5,7 +5,6 @@
 #include <memory>
 #include "Flight.hpp"
 #include <vector>
-#include "FlightsDatabaseUtils.hpp"
 #include "json.hpp"
 
 using json = nlohmann::json;

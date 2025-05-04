@@ -1,5 +1,5 @@
 #include "BookingAgent.hpp"
-
+#include "DatabaseUtils.hpp"
 
 class AgentMode {
     public:

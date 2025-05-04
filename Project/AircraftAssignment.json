@@ -1,0 +1,9 @@
+[
+    {
+        "aircraftID": "B74801",
+        "aircraftModel": "Boeing 747-8",
+        "destination": "Egypt",
+        "flightNumber": "ABC123",
+        "origin": "Germany"
+    }
+]

@@ -17,42 +17,40 @@ using namespace std;
 
 /********************************************************* Start of Main Function  ****************************************************/
 int main() {
-    // AdminMode admin;
-    // AgentMode agent;
-    // while(true) {
-    //   int choice;
-    //   cout << "Welcome to Airline Reservation and Management System" << endl;
-    //   cout << "Please select your role: " << endl;
-    //   cout << "1. Administrator" << endl;
-    //   cout << "2. Booking Agent" << endl;
-    //   cout << "3. Passenger" << endl;
-    //   cout << "4. Exit" << endl;
-    //   cout << "Enter choice: ";
-    //   cin >> choice;
-    //   cout << endl;
+    AdminMode admin;
+    AgentMode agent;
+    while(true) {
+      int choice;
+      cout << "Welcome to Airline Reservation and Management System" << endl;
+      cout << "Please select your role: " << endl;
+      cout << "1. Administrator" << endl;
+      cout << "2. Booking Agent" << endl;
+      cout << "3. Passenger" << endl;
+      cout << "4. Exit" << endl;
+      cout << "Enter choice: ";
+      cin >> choice;
+      cout << endl;
 
-    //   switch (choice) {
-    //       case 1:
-    //           admin.startAdminMode();
-    //           break;
-    //       case 2:
-    //           agent.startAgentMode();
-    //           break;
-    //       case 3:
-    //           //passenger();
-    //           break;
-    //       case 4:
-    //         return 0;
-    //       default:
-    //           cout << "Enter a valid choice" << endl;
-    //           break;
-    //   }
-    Admin a1;
-    a1.assignCrew("P123458", "FA123456", "ABC124");
+      switch (choice) {
+          case 1:
+              admin.startAdminMode();
+              break;
+          case 2:
+              agent.startAgentMode();
+              break;
+          case 3:
+              //passenger();
+              break;
+          case 4:
+            return 0;
+          default:
+              cout << "Enter a valid choice" << endl;
+              break;
+      }
 
-    
-
-  }
+    }
+    return 0;
+}
 
 
 /********************************************************* End of Main Function  ****************************************************/

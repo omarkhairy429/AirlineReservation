@@ -22,5 +22,17 @@
         "flightNumber": "ABC124",
         "origin": "London",
         "status": "Scheduled"
+    },
+    {
+        "Available seats": 200,
+        "Price": 200.0,
+        "Revenue": 0.0,
+        "Seats": 200,
+        "arrivalTime": "2025-09-11 16:00",
+        "depratureTime": "2025-09-11 14:00",
+        "destination": "Canada",
+        "flightNumber": "ABC125",
+        "origin": "USA",
+        "status": "Scheduled"
     }
 ]

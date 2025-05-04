@@ -11,34 +11,38 @@ using json = nlohmann::json;
 
 // Admin logs in
 bool Admin::Login(string userName, string password) {
-    return userName == "adminUser" && password == "12345";
+    return userName == "admin" && password == "12345";
 }
 
 // Admin logs a user
 bool Admin::addUser(string userName, string password, int user_id, string email, int loyalty_points) {
     loadUsers(users, "user.json");
 
-    // Check if the user already exists
-    auto it = find_if(users.begin(), users.end(), [&](const shared_ptr<User> &user) {
-        return user->userName == userName;
+    // Check if the username or user ID already exists
+    auto it = std::find_if(users.begin(), users.end(), [&](const std::shared_ptr<User>& user) {
+        auto passenger = std::dynamic_pointer_cast<Passenger>(user);
+        if (user->userName == userName) {
+            cout << "Username already exists.\n";
+            return true;
+        }
+        if (passenger && passenger->getUserId() == user_id) {
+            cout << "User ID already exists.\n";
+            return true;
+        }
+        return false;
     });
 
     if (it != users.end()) {
-        return false; // User already exists
+        return false;
     }
 
-    // Create a new Passenger object with all the required data
-    auto newUser = make_shared<Passenger>(userName, password, user_id, email, loyalty_points);
-    
-
-    // Add the new user to the users list
+    auto newUser = std::make_shared<Passenger>(userName, password, user_id, email, loyalty_points);
+    newUser->setBalance(0);
     users.push_back(newUser);
-
-    // Save users to the file
     saveUsers(users, "user.json");
     return true;
-
 }
+
 
 
 
@@ -105,7 +109,7 @@ bool Admin::logUser(string userName, string password) {
 
 
 bool Admin::addFlight(string flightNumber, string origin, string destination, string depratureTime, string arrivalTime, int seats, string status, double price) {
-    loadFlights(Flights, "Flights.json");
+    loadData<Flight>(Flights, "Flights.json");
 
     /* Check if flight already added */
     auto it = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
@@ -120,13 +124,13 @@ bool Admin::addFlight(string flightNumber, string origin, string destination, st
     // Create a shared pointer for a new Passenger object
     Flights.emplace_back(make_shared<Flight>(flightNumber, origin, destination, depratureTime, arrivalTime, seats, status, price));
     
-    saveFlights(Flights, "Flights.json");
+    saveData<Flight>(Flights, "Flights.json");
     return true;
 }
 
 bool Admin::updateFlight(string flightNumber, string newOrigin, string newDestination,
     string newDepartureTime, string newArrivalTime,int newSeats, string newStatus, double newPrice) {
-    loadFlights(Flights, "Flights.json");
+    loadData<Flight>(Flights, "Flights.json");
 
     auto it = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
     return f->flightNumber == flightNumber;
@@ -144,13 +148,13 @@ bool Admin::updateFlight(string flightNumber, string newOrigin, string newDestin
     (*it)->status = newStatus;
     (*it)->price = newPrice;
 
-    saveFlights(Flights, "Flights.json");
+    saveData<Flight>(Flights, "Flights.json");
     return true;
 }
 
 
 bool Admin::deleteFlight(string flightNumber) {
-    loadFlights(Flights, "Flights.json");
+    loadData<Flight>(Flights, "Flights.json");
 
     auto it = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
         return f->flightNumber == flightNumber;
@@ -161,7 +165,7 @@ bool Admin::deleteFlight(string flightNumber) {
     }
 
     Flights.erase(it);
-    saveFlights(Flights, "Flights.json");
+    saveData<Flight>(Flights, "Flights.json");
     return true;
 }
 
@@ -173,7 +177,7 @@ bool Admin::deleteFlight(string flightNumber) {
 
 /*************************************************** Pilot, Flight Attendants ***************************************************/
 bool Admin::addPilot(string pilotName, string pilotID) {
-    loadPilots(pilots, "pilots.json");
+    loadData<Pilot>(pilots, "pilots.json");
     auto it = find_if(pilots.begin(), pilots.end(), [&](const std::shared_ptr<Pilot>& p) {
         return p->pilotID == pilotID;
     });
@@ -187,12 +191,12 @@ bool Admin::addPilot(string pilotName, string pilotID) {
     newPilot.pilotName = pilotName;
     newPilot.pilotID = pilotID;
     pilots.emplace_back(make_shared<Pilot>(newPilot));
-    savePilots(pilots, "pilots.json");
+    saveData<Pilot>(pilots, "pilots.json");
     return true;
 }
 
 bool Admin::addFlightAttendant(string name, string id) {
-    loadFlightAttendants(flightAttendants, "FlightAttendants.json");
+    loadData<FlightAttendant>(flightAttendants, "FlightAttendants.json");
 
     auto it = find_if(flightAttendants.begin(), flightAttendants.end(), [&](const std::shared_ptr<FlightAttendant>& f) {
         return f->attendantID == id;
@@ -207,15 +211,15 @@ bool Admin::addFlightAttendant(string name, string id) {
     newAttendant.attendantName = name;
     newAttendant.attendantID = id;
     flightAttendants.emplace_back(make_shared<FlightAttendant>(newAttendant));
-    saveFlightAttendants(flightAttendants, "FlightAttendants.json");
+    saveData<FlightAttendant>(flightAttendants, "FlightAttendants.json");
     return true;
 }
 
 /*************************************************** Assigning crew to the flight ***************************************************/
 bool Admin::assignCrew(string captainID, string attendantID, string flightID) {
-    loadPilots(pilots, "pilots.json");
-    loadFlightAttendants(flightAttendants, "FlightAttendants.json");
-    loadFlights(Flights, "Flights.json");
+    loadData<Pilot>(pilots, "pilots.json");
+    loadData<FlightAttendant>(flightAttendants, "FlightAttendants.json");
+    loadData<Flight>(Flights, "Flights.json");
 
     // Find pilot
     auto pilotIt = find_if(pilots.begin(), pilots.end(), [&](const shared_ptr<Pilot>& p) {
@@ -283,7 +287,7 @@ bool Admin::assignCrew(string captainID, string attendantID, string flightID) {
 /*************************************************** Add Aircrafts ***************************************************/
 
 bool Admin:: addAircraft(string model, string id, int capacity, double maxSpeed) {
-    loadAircraft(aircrafts, "Aircrafts.json");
+    loadData<Aircraft>(aircrafts, "Aircrafts.json");
     /* ID should be unique */
     auto it = find_if(aircrafts.begin(), aircrafts.end(), [&](const std::shared_ptr<Aircraft>& aircraft) {
         return aircraft->getId() == id;
@@ -295,8 +299,68 @@ bool Admin:: addAircraft(string model, string id, int capacity, double maxSpeed)
     }
 
     aircrafts.emplace_back(make_shared<Aircraft>(model, id, capacity, maxSpeed));
-    saveAircraft(aircrafts, "Aircrafts.json");
+    saveData<Aircraft>(aircrafts, "Aircrafts.json");
     return true;
 }
 
+/*************************************************** Assign  Aircrafts ***************************************************/
+
+bool Admin::assignAircraftToFlight(string aircraftID, string flightID) {
+    // Load existing aircrafts and flights
+    loadData<Aircraft>(aircrafts, "Aircrafts.json");
+    loadData<Flight>(Flights, "Flights.json");
+
+    // Find aircraft
+    auto aircraftIt = find_if(aircrafts.begin(), aircrafts.end(), [&](const shared_ptr<Aircraft>& a) {
+        return a->getId() == aircraftID;
+    });
+
+    // Find flight
+    auto flightIt = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
+        return f->flightNumber == flightID;
+    });
+
+    // Validate
+    if (aircraftIt == aircrafts.end() || flightIt == Flights.end()) {
+        cout << "Invalid aircraft or flight ID." << endl;
+        return false;
+    }
+
+    // Build JSON for the assignment
+    json newAssignment = {
+        {"aircraftID", (*aircraftIt)->getId()},
+        {"aircraftModel", (*aircraftIt)->getModel()},
+        {"flightNumber", (*flightIt)->flightNumber},
+        {"origin", (*flightIt)->origin},
+        {"destination", (*flightIt)->destination}
+    };
+
+    // Load or initialize AircraftAssignment.json
+    json allAssignments;
+    ifstream inFile("AircraftAssignment.json");
+    if (inFile.is_open()) {
+        inFile >> allAssignments;
+        inFile.close();
+    }
+
+    // Check if assignment already exists
+    auto existingAssignmentIt = find_if(allAssignments.begin(), allAssignments.end(), [&](const json& assignment) {
+        return assignment["flightNumber"] == flightID;
+    });
+
+    if (existingAssignmentIt != allAssignments.end()) {
+        *existingAssignmentIt = newAssignment;
+        cout << "Aircraft assignment updated for flight " << flightID << "." << endl;
+    } else {
+        allAssignments.push_back(newAssignment);
+        cout << "Aircraft assigned successfully to flight " << flightID << "." << endl;
+    }
+
+    // Save back to file
+    ofstream outFile("AircraftAssignment.json");
+    outFile << setw(4) << allAssignments << endl;
+    outFile.close();
+
+    return true;
+}
 

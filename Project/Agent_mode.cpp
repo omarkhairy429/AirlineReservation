@@ -75,7 +75,7 @@ void AgentMode::bookFlight(BookingAgent &agent) {
     cin >> flightNumber;
 
     // Load flights to check the price
-    loadFlights(flights, "Flights.json");
+    loadData<Flight>(flights, "Flights.json");
 
     // Find the flight by flight number
     auto flight_it = find_if(flights.begin(), flights.end(), [&](const shared_ptr<Flight> &flight) {

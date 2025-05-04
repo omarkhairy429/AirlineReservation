@@ -14,9 +14,7 @@
 #include "UserDatabaseUtils.hpp"
 #include "Pilot.hpp"
 #include "FlightAttendant.hpp"
-#include "PilotsDatabaseUtils.hpp"
-#include "FlightAttendantDatabaseUtils.hpp"
-#include "AirCraftDatabaseUtils.hpp"
+#include "DatabaseUtils.hpp"
 
 
 
@@ -51,7 +49,8 @@ public:
 
     // Aircraft
     bool addAircraft(string model, string id, int capacity, double maxSpeed);
-    
+    bool assignAircraftToFlight(string aircraftID, string flightID);
+    friend class AdminMode; // Allow AdminMode to access private members of Admin
 };
 
 #endif
