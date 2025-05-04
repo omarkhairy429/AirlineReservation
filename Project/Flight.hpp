@@ -16,12 +16,14 @@ private:
     string status;
     int total_seats;
     int availableSeats;
+    double totalRevenue;
+    double price;
 
 public:
     Flight() = default;
-    Flight(string flightNumber, string origin, string destination, string depratureTime, string arrivalTime,int seats ,string status) :
+    Flight(string flightNumber, string origin, string destination, string depratureTime, string arrivalTime,int seats ,string status, double price) :
         flightNumber(flightNumber), origin(origin), destination(destination),
-        depratureTime(depratureTime), arrivalTime(arrivalTime), total_seats(seats) ,status(status), availableSeats(seats) {
+        depratureTime(depratureTime), arrivalTime(arrivalTime), total_seats(seats) ,status(status), availableSeats(seats), price(price) {
     }
 
     // Friend functions for JSON serialization
@@ -34,7 +36,10 @@ public:
             {"arrivalTime", f.arrivalTime},
             {"status", f.status},
             {"Seats", f.total_seats},
-            {"Available seats", f.availableSeats}
+            {"Available seats", f.availableSeats},
+            {"Price", f.price},
+            {"Revenue", f.totalRevenue}
+
         };
     }
 
@@ -47,6 +52,8 @@ public:
         j.at("status").get_to(f.status);
         j.at("Seats").get_to(f.total_seats);
         j.at("Available seats").get_to(f.availableSeats);
+        j.at("Price").get_to(f.price);
+        j.at("Revenue").get_to(f.totalRevenue);
         
     }
 
@@ -54,6 +61,7 @@ public:
     friend class BookingAgent;
     friend class crewMember;
     friend class BookingAgent;
+    friend class AgentMode;
 };
 
 #endif

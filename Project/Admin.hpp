@@ -8,12 +8,15 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include <memory>  // Include for shared_ptr
+#include <memory>  
 #include "Flight.hpp"
+#include "AirCraft.hpp"
 #include "UserDatabaseUtils.hpp"
-#include "FlightsDatabaseUtils.hpp"
 #include "Pilot.hpp"
 #include "FlightAttendant.hpp"
+#include "PilotsDatabaseUtils.hpp"
+#include "FlightAttendantDatabaseUtils.hpp"
+#include "AirCraftDatabaseUtils.hpp"
 
 
 
@@ -21,6 +24,9 @@ class Admin : public User {
 private:
     vector<shared_ptr<User>> users;
     vector<shared_ptr<Flight>> Flights;
+    vector<shared_ptr<Pilot>> pilots;
+    vector<shared_ptr<FlightAttendant>> flightAttendants;
+    vector<shared_ptr<Aircraft>> aircrafts;
 
     // string hashPassword(const string &password);
     // bool verifyPassword(const string &password, const string &hashedPassword);
@@ -34,9 +40,17 @@ public:
     bool logUser(string userName, string password);
 
     // Flight
-    bool addFlight(string flightNumber, string origin, string destination, string depratureTime, string arrivalTime,int seats, string status);
-    bool updateFlight(string flightNumber, string newOrigin, string newDestination,string newDepartureTime, string newArrivalTime,int newSeats, string newStatus); 
+    bool addFlight(string flightNumber, string origin, string destination, string depratureTime, string arrivalTime,int seats, string status, double price);
+    bool updateFlight(string flightNumber, string newOrigin, string newDestination,string newDepartureTime, string newArrivalTime,int newSeats, string newStatus, double newPrice); 
     bool deleteFlight(string flightNumber);
+
+    // Crew
+    bool addPilot(string pilotName, string pilotID);
+    bool addFlightAttendant(string name, string id);
+    bool assignCrew(string captainID, string attendantID, string flightID);
+
+    // Aircraft
+    bool addAircraft(string model, string id, int capacity, double maxSpeed);
     
 };
 

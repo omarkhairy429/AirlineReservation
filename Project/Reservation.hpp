@@ -10,6 +10,7 @@ using json = nlohmann::json;
 class Reservation {
 private:
     int passengerID;
+    string reservationID;
     string flightNumber;
     string seatNumber;
     string paymentMethod;
@@ -18,8 +19,8 @@ private:
 public:
     Reservation() = default;
 
-    Reservation(int id, const std::string& flight, const std::string& seat, const std::string& method, const std::string& details)
-        : passengerID(id), flightNumber(flight), seatNumber(seat), paymentMethod(method), paymentDetails(details) {}
+    Reservation(int id, const std::string& flight, const std::string& seat, const std::string& method, const std::string& details, const string & reservationID)
+        : passengerID(id), flightNumber(flight), seatNumber(seat), paymentMethod(method), paymentDetails(details),reservationID(reservationID)  {}
 
     // Setters
     void setPassengerID(int id);
@@ -42,7 +43,8 @@ public:
             {"flightNumber", r.flightNumber},
             {"seatNumber", r.seatNumber},
             {"paymentMethod", r.paymentMethod},
-            {"paymentDetails", r.paymentDetails}
+            {"paymentDetails", r.paymentDetails},
+            {"Reservation ID", r.reservationID}
         };
     }
 
@@ -52,7 +54,10 @@ public:
         j.at("seatNumber").get_to(r.seatNumber);
         j.at("paymentMethod").get_to(r.paymentMethod);
         j.at("paymentDetails").get_to(r.paymentDetails);
+        j.at("Reservation ID").get_to(r.reservationID);
     }
+
+    friend class BookingAgent;
 };
 
 #endif // RESERVATION_HPP

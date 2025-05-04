@@ -1,16 +1,10 @@
 [
     {
-        "email": "omar.fayed.5832@gmail.com",
+        "balance": 880.0,
+        "email": "omar.khairy.5832@gmail.com",
         "loyalty_points": 0,
-        "password": "Omarqwer1",
-        "userName": "Omar Khairy",
-        "user_id": 1
-    },
-    {
-        "email": "mohamed.salah@gmail.com",
-        "loyalty_points": 0,
-        "password": "2018",
-        "userName": "Mohamed Salah",
-        "user_id": 2
+        "password": "9999",
+        "userName": "Omar Fayed",
+        "user_id": 3
     }
 ]

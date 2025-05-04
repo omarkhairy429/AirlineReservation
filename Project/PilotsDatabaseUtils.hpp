@@ -1,5 +1,5 @@
-#ifndef USER_DATABASE_UTILS_H
-#define USER_DATABASE_UTILS_H
+#ifndef PILOT_DATABSE_UTILS_HPP
+#define PILOT_DATABSE_UTILS_HPP
 
 #include <vector>
 #include <memory>

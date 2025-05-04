@@ -1,0 +1,20 @@
+[
+    {
+        "attendantID": "FA123457",
+        "attendantName": "Emillia",
+        "destination": "Egypt",
+        "flightNumber": "ABC123",
+        "origin": "Germany",
+        "pilotID": "P123458",
+        "pilotName": "Magdy"
+    },
+    {
+        "attendantID": "FA123456",
+        "attendantName": "Emma",
+        "destination": "Spain",
+        "flightNumber": "ABC124",
+        "origin": "London",
+        "pilotID": "P123458",
+        "pilotName": "Magdy"
+    }
+]

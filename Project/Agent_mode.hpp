@@ -8,4 +8,5 @@ class AgentMode {
     private:
         void bookFlight(BookingAgent & agent);
         void searchFlight(BookingAgent & agent);
+        void cancelReservation(BookingAgent & agent);
     };

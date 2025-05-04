@@ -25,7 +25,8 @@ class BookingAgent: public User {
 
         bool Login(string userName, string password);
         void searchFlights(string origin, string destination, string depratureDate);
-        bool bookFlight(int passengerID, string flightNumber, string seat, string paymentMethod, string paymentDetails);
+        bool bookFlight(int passengerID, string flightNumber, string seat, string paymentMethod, string paymentDetails, string reservationID);
+        bool cancelReservation(string reservationID);
 
 };
 

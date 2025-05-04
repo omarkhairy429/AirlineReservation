@@ -1,3 +1,6 @@
+#ifndef FLIGHT_ATTENDANT_HPP
+#define FLIGHT_ATTENDANT_HPP
+
 #include <string>
 #include <memory>
 #include "Flight.hpp"
@@ -18,13 +21,15 @@ class FlightAttendant {
         j = json{
             {"attendantID", a.attendantID},
             {"attendantName", a.attendantName},
-            {"assignedFlightID", a.assignedFlightID}
         };
     }
     
     friend void from_json(const json& j, FlightAttendant& a) {
         j.at("attendantID").get_to(a.attendantID);
         j.at("attendantName").get_to(a.attendantName);
-        j.at("assignedFlightID").get_to(a.assignedFlightID);
     } 
+
+    friend class Admin;
 };
+
+#endif

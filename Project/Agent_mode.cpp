@@ -37,8 +37,7 @@ void AgentMode::startAgentMode() {
                     // Call the function for modifying reservations here
                     break;
                 case 4:  // Cancel Reservation
-                    cout << "You selected: Cancel Reservation" << endl;
-                    // Call the function for canceling reservations here
+                    cancelReservation(agent);
                     break;
                 case 5:  // Logout
                     cout << "You selected: Logout" << endl;
@@ -59,39 +58,59 @@ void AgentMode::startAgentMode() {
 
 /***********************************************  Option 1 Book Flight **********************************************/
 
-void AgentMode:: bookFlight(BookingAgent & agent) {
-        int passengerID;
-        string flightNumber, seatNumber, paymentMethod, paymentDetails;
-        cout << "-- Book a Flight --" << endl << endl;
+void AgentMode::bookFlight(BookingAgent &agent) {
+    vector<shared_ptr<Flight>> flights;
+    int passengerID;
+    string flightNumber, seatNumber, paymentMethod, paymentDetails, reservationID;
 
-        cout << "Enter Passenger ID: ";
-        cin >> passengerID;
+    cout << "-- Book a Flight --" << endl << endl;
 
-        cout << "Enter Flight Number: ";
-        cin >> flightNumber;
+    cout << "Enter Passenger ID: ";
+    cin >> passengerID;
 
-        cout << "Enter Seat Number (e.g., 12A): ";
-        cin >> seatNumber;
+    cout << "Enter Reservation ID: ";
+    cin >> reservationID;
 
-        cout << "Enter Payment Method (Credit Card/Cash/PayPal): ";
-        cin >> paymentMethod;
+    cout << "Enter Flight Number: ";
+    cin >> flightNumber;
 
-        cout << "Enter Payment Details: ";
-        cin >> paymentDetails;
+    // Load flights to check the price
+    loadFlights(flights, "Flights.json");
 
-        if (agent.bookFlight(passengerID, flightNumber, seatNumber, paymentMethod, paymentDetails)) {
-            cout << "\nBooking successful!" << endl;
-            cout << "Passenger ID: " << passengerID << endl;
-            cout << "Flight Number: " << flightNumber << endl;
-            cout << "Seat Number: " << seatNumber << endl;
-            cout << "Payment Method: " << paymentMethod << endl;
-            cout << "Payment Details: " << paymentDetails << endl;
-        }
-        else {
-            cout << "Please try again" << endl;
-        }
+    // Find the flight by flight number
+    auto flight_it = find_if(flights.begin(), flights.end(), [&](const shared_ptr<Flight> &flight) {
+        return flight->flightNumber == flightNumber;
+    });
+
+    if (flight_it == flights.end()) {
+        cout << "Flight number not found!" << endl;
+        return;
+    }
+
+    // Display the flight price
+    cout << "Flight Price: $" << (*flight_it)->price << endl;
+
+    cout << "Enter Seat Number (e.g., 12A): ";
+    cin >> seatNumber;
+
+    cout << "Enter Payment Method (Credit Card/Cash/PayPal): ";
+    cin >> paymentMethod;
+
+    cout << "Enter Payment Details: ";
+    cin >> paymentDetails;
+
+    if (agent.bookFlight(passengerID, flightNumber, seatNumber, paymentMethod, paymentDetails, reservationID)) {
+        cout << "\nBooking successful!" << endl;
+        cout << "Passenger ID: " << passengerID << endl;
+        cout << "Flight Number: " << flightNumber << endl;
+        cout << "Seat Number: " << seatNumber << endl;
+        cout << "Payment Method: " << paymentMethod << endl;
+        cout << "Payment Details: " << paymentDetails << endl;
+        cout << "Reservation ID: " << reservationID << endl;
+    } else {
+        cout << "Please try again" << endl;
+    }
 }
-
 /***********************************************  Option 2 Search Flight **********************************************/
 void AgentMode:: searchFlight(BookingAgent & agent) {
     string origin, destination, depratureDate;
@@ -103,6 +122,15 @@ void AgentMode:: searchFlight(BookingAgent & agent) {
     cout << "Enter Deprature Date (YYYY-MM-DD)";
     cin >> depratureDate;
     agent.searchFlights(origin, destination, depratureDate);
+}
+
+
+/***********************************************  Option 4 Cancel Reservation **********************************************/
+void AgentMode::cancelReservation(BookingAgent & agent) {
+    string reservationID;
+    cout << "Enter Reservation ID" << endl;
+    cin >> reservationID;
+    agent.cancelReservation(reservationID);
 }
 
 

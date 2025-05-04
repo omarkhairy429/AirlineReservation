@@ -1,0 +1,62 @@
+[
+    {
+        "capacity": 400,
+        "id": "B74801",
+        "maxSpeed": 988.0,
+        "model": "Boeing 747-8"
+    },
+    {
+        "capacity": 200,
+        "id": "B73701",
+        "maxSpeed": 876.0,
+        "model": "Boeing 737-800"
+    },
+    {
+        "capacity": 350,
+        "id": "B77301",
+        "maxSpeed": 945.0,
+        "model": "Boeing 777-300ER"
+    },
+    {
+        "capacity": 300,
+        "id": "B78901",
+        "maxSpeed": 954.0,
+        "model": "Boeing 787-9 Dreamliner"
+    },
+    {
+        "capacity": 180,
+        "id": "A32001",
+        "maxSpeed": 871.0,
+        "model": "Airbus A320neo"
+    },
+    {
+        "capacity": 325,
+        "id": "A35001",
+        "maxSpeed": 945.0,
+        "model": "Airbus A350-900"
+    },
+    {
+        "capacity": 850,
+        "id": "A38001",
+        "maxSpeed": 1020.0,
+        "model": "Airbus A380-800"
+    },
+    {
+        "capacity": 130,
+        "id": "E19501",
+        "maxSpeed": 871.0,
+        "model": "Embraer E195-E2"
+    },
+    {
+        "capacity": 90,
+        "id": "CRJ901",
+        "maxSpeed": 876.0,
+        "model": "Bombardier CRJ900"
+    },
+    {
+        "capacity": 70,
+        "id": "ATR7201",
+        "maxSpeed": 518.0,
+        "model": "ATR 72-600"
+    }
+]

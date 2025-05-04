@@ -1,23 +1,10 @@
 [
     {
-        "flightNumber": "ABC",
-        "passengerID": 2,
-        "paymentDetails": "101",
-        "paymentMethod": "Cash",
-        "seatNumber": "12B"
-    },
-    {
-        "flightNumber": "ABC",
-        "passengerID": 1,
-        "paymentDetails": "123456",
-        "paymentMethod": "Cash",
-        "seatNumber": "13C"
-    },
-    {
-        "flightNumber": "ABC",
-        "passengerID": 1,
-        "paymentDetails": "12345",
+        "Reservation ID": "R123",
+        "flightNumber": "ABC123",
+        "passengerID": 3,
+        "paymentDetails": "1234-1234-1234-1234",
         "paymentMethod": "PayPal",
-        "seatNumber": "16F"
+        "seatNumber": "12A"
     }
 ]

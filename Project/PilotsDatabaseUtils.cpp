@@ -7,7 +7,7 @@ using namespace std;
 void savePilots(const vector<shared_ptr<Pilot>>& pilots, const string& filename) {
     json j;
     for (const auto& pilot : pilots) {
-        j.emplace_back(pilot);
+        j.emplace_back(*pilot);
     }
 
     ofstream file(filename);

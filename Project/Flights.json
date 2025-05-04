@@ -1,12 +1,26 @@
 [
     {
-        "Available seats": 177,
+        "Available seats": 179,
+        "Price": 120.0,
+        "Revenue": 120.0,
         "Seats": 180,
-        "arrivalTime": "2025-06-23 23:00",
-        "depratureTime": "2025-06-23 20:00",
-        "destination": "Kuwait",
-        "flightNumber": "ABC",
-        "origin": "Egypt",
+        "arrivalTime": "2020-06-25 22:00",
+        "depratureTime": "2025-06-25 19:00",
+        "destination": "Egypt",
+        "flightNumber": "ABC123",
+        "origin": "Germany",
+        "status": "Scheduled"
+    },
+    {
+        "Available seats": 180,
+        "Price": 120.0,
+        "Revenue": 0.0,
+        "Seats": 180,
+        "arrivalTime": "2025-07-23 15:00",
+        "depratureTime": "2025-07-23 14:00",
+        "destination": "Spain",
+        "flightNumber": "ABC124",
+        "origin": "London",
         "status": "Scheduled"
     }
 ]

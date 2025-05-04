@@ -87,6 +87,7 @@ void AdminMode::manageFlights(Admin &admin) {
 void AdminMode::addNewFlight(Admin &admin) {
     string flightNumber, origin, destination, departureDateTime, arrivalDateTime, aircraftType, status;
     int totalSeats;
+    double price;
 
     cout << "--- Add New Flight ---" << endl;
 
@@ -113,12 +114,15 @@ void AdminMode::addNewFlight(Admin &admin) {
     cout << "Enter Total Seats: ";
     cin >> totalSeats;
 
+    cout << "Enter Price: ";
+    cin >> price;
+
     cin.ignore();
 
     cout << "Enter Status (Scheduled/Delayed/Canceled): ";
     getline(cin, status);
 
-    admin.addFlight(flightNumber, origin, destination, departureDateTime, arrivalDateTime, totalSeats ,status);
+    admin.addFlight(flightNumber, origin, destination, departureDateTime, arrivalDateTime, totalSeats ,status, price);
 }
 
 /************************************************************************  End of Managing Flights ********************************************************/
