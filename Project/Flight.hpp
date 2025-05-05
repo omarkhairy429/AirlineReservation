@@ -80,9 +80,6 @@ public:
     }
 
     // Friend classes
-    friend class Admin;
-    friend class BookingAgent;
-    friend class crewMember;
     friend class BookingAgent;
     friend class AgentMode;
     friend class AdminMode;

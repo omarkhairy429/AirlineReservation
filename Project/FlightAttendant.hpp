@@ -48,8 +48,7 @@ public:
         j.at("attendantName").get_to(a.attendantName);
     }
 
-    // Friend classes
-    friend class Admin;
+    
 };
 
 #endif

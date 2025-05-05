@@ -140,7 +140,7 @@ bool Admin::addFlight(string flightNumber, string origin, string destination, st
 
     /* Check if flight already added */
     auto it = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
-        return f->flightNumber == flightNumber;
+        return f->getFlightNumber() == flightNumber;
     });
 
     /* Flight is already added */
@@ -160,20 +160,21 @@ bool Admin::updateFlight(string flightNumber, string newOrigin, string newDestin
     loadData<Flight>(Flights, "Flights.json");
 
     auto it = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
-    return f->flightNumber == flightNumber;
+    return f->getFlightNumber() == flightNumber;
     });
 
     if (it == Flights.end()) {
         return false; // Flight not found
     }
 
-    (*it)->origin = newOrigin;
-    (*it)->destination = newDestination;
-    (*it)->depratureTime = newDepartureTime;
-    (*it)->arrivalTime = newArrivalTime;
-    (*it)->total_seats = newSeats;
-    (*it)->status = newStatus;
-    (*it)->price = newPrice;
+    (*it)->setOrigin(newOrigin);
+    (*it)->setDestination(newDestination);
+    (*it)->setDepratureTime(newDepartureTime);
+    (*it)->setArrivalTime(newArrivalTime);
+    (*it)->setTotalSeats(newSeats);
+    (*it)->setStatus(newStatus);
+    (*it)->setPrice(newPrice);
+
 
     saveData<Flight>(Flights, "Flights.json");
     return true;
@@ -188,7 +189,7 @@ bool Admin::deleteFlight(string flightNumber) {
 
     // Find the flight
     auto flightIt = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
-        return f->flightNumber == flightNumber;
+        return f->getFlightNumber() == flightNumber;
     });
 
     if (flightIt == Flights.end()) {
@@ -260,7 +261,7 @@ bool Admin::addFlightAttendant(string name, string id) {
     loadData<FlightAttendant>(flightAttendants, "FlightAttendants.json");
 
     auto it = find_if(flightAttendants.begin(), flightAttendants.end(), [&](const std::shared_ptr<FlightAttendant>& f) {
-        return f->attendantID == id;
+        return f->getAttendantID() == id;
     });
 
     if (it != flightAttendants.end()) {
@@ -269,8 +270,8 @@ bool Admin::addFlightAttendant(string name, string id) {
     }
 
     FlightAttendant newAttendant;
-    newAttendant.attendantName = name;
-    newAttendant.attendantID = id;
+    newAttendant.setAttendantName(name);
+    newAttendant.setAttendantID(id);
     flightAttendants.emplace_back(make_shared<FlightAttendant>(newAttendant));
     saveData<FlightAttendant>(flightAttendants, "FlightAttendants.json");
     return true;
@@ -289,12 +290,12 @@ bool Admin::assignCrew(string captainID, string attendantID, string flightID) {
 
     // Find flight attendant
     auto attendantIt = find_if(flightAttendants.begin(), flightAttendants.end(), [&](const shared_ptr<FlightAttendant>& a) {
-        return a->attendantID == attendantID;
+        return a->getAttendantID() == attendantID;
     });
 
     // Find flight
     auto flightIt = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
-        return f->flightNumber == flightID;
+        return f->getFlightNumber() == flightID;
     });
 
     // Validate
@@ -307,11 +308,11 @@ bool Admin::assignCrew(string captainID, string attendantID, string flightID) {
     json newCrewAssignment = {
         {"pilotName", (*pilotIt)->pilotName},
         {"pilotID", (*pilotIt)->pilotID},
-        {"attendantName", (*attendantIt)->attendantName},
-        {"attendantID", (*attendantIt)->attendantID},
-        {"flightNumber", (*flightIt)->flightNumber},
-        {"origin", (*flightIt)->origin},
-        {"destination", (*flightIt)->destination}
+        {"attendantName", (*attendantIt)->getAttendantName()},
+        {"attendantID", (*attendantIt)->getAttendantID()},
+        {"flightNumber", (*flightIt)->getFlightNumber()},
+        {"origin", (*flightIt)->getOrigin()},
+        {"destination", (*flightIt)->getDestination()}
     };
 
     // Load or initialize crewAssignment.json
@@ -378,7 +379,7 @@ bool Admin::assignAircraftToFlight(string aircraftID, string flightID) {
 
     // Find flight
     auto flightIt = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& f) {
-        return f->flightNumber == flightID;
+        return f->getFlightNumber() == flightID;
     });
 
     // Validate
@@ -391,9 +392,9 @@ bool Admin::assignAircraftToFlight(string aircraftID, string flightID) {
     json newAssignment = {
         {"aircraftID", (*aircraftIt)->getId()},
         {"aircraftModel", (*aircraftIt)->getModel()},
-        {"flightNumber", (*flightIt)->flightNumber},
-        {"origin", (*flightIt)->origin},
-        {"destination", (*flightIt)->destination}
+        {"flightNumber", (*flightIt)->getFlightNumber()},
+        {"origin", (*flightIt)->getOrigin()},
+        {"destination", (*flightIt)->getDestination()}
     };
 
     // Load or initialize AircraftAssignment.json

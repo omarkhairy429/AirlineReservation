@@ -4,6 +4,8 @@
 
 using namespace std;
 
+
+/********************************************************* Admin Mode *********************************************************/
 void AdminMode::startAdminMode() {
     Admin admin;
     string username, password;
@@ -92,6 +94,8 @@ void AdminMode::manageFlights(Admin &admin) {
     }
 }
 
+
+/********************************************************* 1) Add New Flight *********************************************************/
 void AdminMode::addNewFlight(Admin &admin) {
     cout << endl << endl;
     displayFlights(admin);
@@ -127,6 +131,7 @@ void AdminMode::addNewFlight(Admin &admin) {
     }
 }
 
+/********************************************************* 2) Update Existing Flight *********************************************************/
 void AdminMode::updateFlight(Admin &admin) {
     cout << endl << endl;
     displayFlights(admin);
@@ -162,6 +167,7 @@ void AdminMode::updateFlight(Admin &admin) {
     }
 }
 
+/********************************************************* 3) Remove Flight *********************************************************/
 void AdminMode::removeFlight(Admin &admin) {
     cout << endl << endl;
     displayFlights(admin);
@@ -178,6 +184,8 @@ void AdminMode::removeFlight(Admin &admin) {
     }
 }
 
+
+/********************************************************* 4) View All Flights *********************************************************/
 void AdminMode::viewAllFlights(Admin &admin) {
     cout << endl << endl;
     cout << "--- View All Flights ---" << endl;
@@ -194,6 +202,10 @@ void AdminMode::viewAllFlights(Admin &admin) {
         cout << "------------------------" << endl;
     }
 }
+
+
+
+
 
 /********************************************************* Manage Aircrafts *********************************************************/
 void AdminMode::manageAircrafts(Admin &admin) {
@@ -239,6 +251,9 @@ void AdminMode::manageAircrafts(Admin &admin) {
     }
 }
 
+
+
+/********************************************************* 1) Add Aircraft *********************************************************/
 void AdminMode::addAircraft(Admin &admin) {
     string model, id;
     int capacity;
@@ -261,6 +276,9 @@ void AdminMode::addAircraft(Admin &admin) {
     }
 }
 
+
+
+/********************************************************* 2) Assign Aircraft to Flight *********************************************************/
 void AdminMode::assignAircraft(Admin &admin) {
     cout << endl << endl;
     displayAircrafts(admin);
@@ -284,6 +302,78 @@ void AdminMode::assignAircraft(Admin &admin) {
         cout << "Failed to assign aircraft. Aircraft or flight ID may not exist." << endl;
     }
 }
+
+
+
+/********************************************************* 3) Add Maintenance *********************************************************/
+void AdminMode::addMaintenance(Admin &admin) {
+    string aircraftID, maintenanceType, startDate, endDate, description;
+    double estimatedCost;
+
+    cout << endl << endl;
+    displayAircrafts(admin);
+    cout << endl << endl;
+    displayMaintenanceSchedules(admin);
+    cout << endl << endl;
+
+    cout << "--- Add Maintenance ---" << endl;
+    cout << "Enter Aircraft ID: ";
+    cin >> aircraftID;
+    cout << "Enter Maintenance Type: Motor/Avionics/Other: ";
+    cin >> maintenanceType;
+    cout << "Enter Start Date (YYYY-MM-DD): ";
+    cin >> startDate;
+    cout << "Enter End Date (YYYY-MM-DD): ";
+    cin >> endDate;
+    cout << "Enter Description: ";
+    cin.ignore(); // Clear the newline character from the input buffer
+    getline(cin, description); // Allow spaces in description
+    cout << "Enter Estimated Cost: ";
+    cin >> estimatedCost;
+
+    if (admin.addMaintenance(aircraftID, maintenanceType, startDate, endDate, description, estimatedCost)) {
+        cout << "Maintenance added successfully!" << endl;
+    } else {
+        cout << "Failed to add maintenance. Aircraft ID may not exist." << endl;
+    }
+}
+
+
+
+/********************************************************* 4) View All Aircrafts *********************************************************/
+void AdminMode::displayAircrafts(Admin &admin) {
+    cout << "--- Display All Aircrafts ---" << endl;
+    loadData<Aircraft>(admin.aircrafts, "Aircrafts.json");
+    for (const auto &aircraft : admin.aircrafts) {
+        cout << "Aircraft Model: " << aircraft->getModel() << endl;
+        cout << "Aircraft ID: " << aircraft->getId() << endl;
+        cout << "Capacity: " << aircraft->getCapacity() << endl;
+        cout << "Max Speed: " << aircraft->getMaxSpeed() << endl;
+        cout << "------------------------" << endl;
+    }
+}
+
+
+
+/********************************************************* 5) View Maintenance Schedules *********************************************************/
+void AdminMode::displayMaintenanceSchedules(Admin &admin) {
+    // use loadData<Maintenance> to load the maintenance schedules
+    cout << "--- Display All Maintenance Schedules ---" << endl;
+    loadData<Maintenance>(admin.maintenances, "Maintenance.json");
+    for (const auto &maintenance : admin.maintenances) {
+        cout << "Aircraft ID: " << maintenance->getAircraftId() << endl;
+        cout << "Maintenance Type: " << maintenance->getMaintenanceType() << endl;
+        cout << "Start Date: " << maintenance->getStartDate() << endl;
+        cout << "End Date: " << maintenance->getEndDate() << endl;
+        cout << "Description: " << maintenance->getDescription() << endl;
+        cout << "Estimated Cost: $" << maintenance->getEstimatedCost() << endl;
+        cout << "------------------------" << endl;
+    }
+}
+
+
+
+
 
 /********************************************************* Manage Users *********************************************************/
 void AdminMode::manageUsers(Admin &admin) {
@@ -315,6 +405,9 @@ void AdminMode::manageUsers(Admin &admin) {
     }
 }
 
+
+
+/********************************************************* 1) Add New User *********************************************************/
 void AdminMode::addUser(Admin &admin) {
     cout << endl << endl;
     displayUsers(admin);
@@ -345,6 +438,9 @@ void AdminMode::addUser(Admin &admin) {
     }
 }
 
+
+
+/********************************************************* 2) Update User *********************************************************/
 void AdminMode::updateUser(Admin &admin) {
     cout << endl << endl;
     displayUsers(admin);
@@ -363,6 +459,9 @@ void AdminMode::updateUser(Admin &admin) {
     }
 }
 
+
+
+/********************************************************* 3) Delete User *********************************************************/
 void AdminMode::deleteUser(Admin &admin) {
     displayUsers(admin);
     string userName;
@@ -377,6 +476,10 @@ void AdminMode::deleteUser(Admin &admin) {
         cout << "Failed to delete user. Username may not exist." << endl;
     }
 }
+
+
+
+
 
 /********************************************************* Manage Crew Assignments *********************************************************/
 void AdminMode::manageCrewAssignments(Admin &admin) {
@@ -462,18 +565,8 @@ void AdminMode::displayFlightAttendants(Admin &admin) {
     }
 }
 
-/********************************************************* Display Aircrafts *********************************************************/
-void AdminMode::displayAircrafts(Admin &admin) {
-    cout << "--- Display All Aircrafts ---" << endl;
-    loadData<Aircraft>(admin.aircrafts, "Aircrafts.json");
-    for (const auto &aircraft : admin.aircrafts) {
-        cout << "Aircraft Model: " << aircraft->getModel() << endl;
-        cout << "Aircraft ID: " << aircraft->getId() << endl;
-        cout << "Capacity: " << aircraft->getCapacity() << endl;
-        cout << "Max Speed: " << aircraft->getMaxSpeed() << endl;
-        cout << "------------------------" << endl;
-    }
-}
+
+
 
 /**************************** Display Crew Assignment ************************/
 void AdminMode::displayCrewAssignments(Admin &admin) {
@@ -528,54 +621,6 @@ void AdminMode::displayAircraftAssignments(Admin &admin) {
     }
 }
 
-/**************************** Display Maintenance Schedules ************************/
-void AdminMode::displayMaintenanceSchedules(Admin &admin) {
-    // use loadData<Maintenance> to load the maintenance schedules
-    cout << "--- Display All Maintenance Schedules ---" << endl;
-    loadData<Maintenance>(admin.maintenances, "Maintenance.json");
-    for (const auto &maintenance : admin.maintenances) {
-        cout << "Aircraft ID: " << maintenance->getAircraftId() << endl;
-        cout << "Maintenance Type: " << maintenance->getMaintenanceType() << endl;
-        cout << "Start Date: " << maintenance->getStartDate() << endl;
-        cout << "End Date: " << maintenance->getEndDate() << endl;
-        cout << "Description: " << maintenance->getDescription() << endl;
-        cout << "Estimated Cost: $" << maintenance->getEstimatedCost() << endl;
-        cout << "------------------------" << endl;
-    }
-}
-
-/**************************** Add Maintenance ************************/
-void AdminMode::addMaintenance(Admin &admin) {
-    string aircraftID, maintenanceType, startDate, endDate, description;
-    double estimatedCost;
-
-    cout << endl << endl;
-    displayAircrafts(admin);
-    cout << endl << endl;
-    displayMaintenanceSchedules(admin);
-    cout << endl << endl;
-
-    cout << "--- Add Maintenance ---" << endl;
-    cout << "Enter Aircraft ID: ";
-    cin >> aircraftID;
-    cout << "Enter Maintenance Type: Motor/Avionics/Other: ";
-    cin >> maintenanceType;
-    cout << "Enter Start Date (YYYY-MM-DD): ";
-    cin >> startDate;
-    cout << "Enter End Date (YYYY-MM-DD): ";
-    cin >> endDate;
-    cout << "Enter Description: ";
-    cin.ignore(); // Clear the newline character from the input buffer
-    getline(cin, description); // Allow spaces in description
-    cout << "Enter Estimated Cost: ";
-    cin >> estimatedCost;
-
-    if (admin.addMaintenance(aircraftID, maintenanceType, startDate, endDate, description, estimatedCost)) {
-        cout << "Maintenance added successfully!" << endl;
-    } else {
-        cout << "Failed to add maintenance. Aircraft ID may not exist." << endl;
-    }
-}
 
 
 
