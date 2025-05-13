@@ -127,6 +127,8 @@ void PassengerMode::bookFlight(Passenger& passenger) {
     }
 }
 
+
+
 /******************************************* View Reservations  *******************************************/
 void PassengerMode::viewReservations(Passenger& passenger) {
     BookingAgent agent;
@@ -152,6 +154,8 @@ void PassengerMode::viewReservations(Passenger& passenger) {
         cout << "No reservations found." << endl;
     }
 }
+
+
 
 /******************************************* Check In  *******************************************/
 void PassengerMode::checkIn(Passenger& passenger) {

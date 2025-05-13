@@ -1,10 +1,10 @@
 [
     {
         "aircraftId": "B77301",
-        "description": "This Maintenecne will solve motor sound issue",
-        "endDate": "2026-01-27",
-        "estimatedCost": 20000.0,
+        "description": "This maintenance is supposed to fix motor sound problem",
+        "endDate": "2026-02-03",
+        "estimatedCost": 10000.0,
         "maintenanceType": "Motor",
-        "startDate": "2026-01-23"
+        "startDate": "2026-01-24"
     }
 ]

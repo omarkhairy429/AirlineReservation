@@ -296,11 +296,7 @@ void AdminMode::assignAircraft(Admin &admin) {
     cout << "Enter Flight ID: ";
     cin >> flightID;
 
-    if (admin.assignAircraftToFlight(aircraftID, flightID)) {
-        cout << "Aircraft assigned successfully!" << endl;
-    } else {
-        cout << "Failed to assign aircraft. Aircraft or flight ID may not exist." << endl;
-    }
+   admin.assignAircraftToFlight(aircraftID, flightID);
 }
 
 
@@ -468,7 +464,8 @@ void AdminMode::deleteUser(Admin &admin) {
 
     cout << "--- Delete User ---" << endl;
     cout << "Enter Username to Delete: ";
-    cin >> userName;
+    cin.ignore(); // Clear the input buffer to handle any leftover newline characters
+    getline(cin, userName); // Use getline to allow spaces in the username
 
     if (admin.deleteUser(userName)) {
         cout << "User deleted successfully!" << endl;

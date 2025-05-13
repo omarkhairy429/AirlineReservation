@@ -3,6 +3,7 @@
 #include "fstream"
 #include <algorithm>
 
+//****************************************** Booking Agent Login ******************************************/
 bool BookingAgent::Login(string userName, string password) {
     if (userName == "agent" && password == "12345") {
         this->userName = userName;
@@ -15,9 +16,9 @@ bool BookingAgent::Login(string userName, string password) {
 }
 
 
-/******************************** Start of Booking Agent Flight Operations  **************************************************/
 
-/* Search in Flights database  */
+
+/*************************************** Booking search Flight  ******************************************/
 bool BookingAgent::searchFlights(string origin, string destination, string depratureDate) {
     loadData<Flight>(Flights, "Flights.json");
     int counter = 0;
@@ -41,16 +42,11 @@ bool BookingAgent::searchFlights(string origin, string destination, string depra
 }
 
 
-/******************************** End of Booking Agent Flight Operations  **************************************************/
 
 
 
 
-
-
-
-/****************************************** Booking Agent and User Relation ******************************************/
-
+/****************************************** Booking a Flight ******************************************/
 bool BookingAgent::bookFlight(int passengerID, string flightNumber, string seat, string paymentMethod, string paymentDetails, string reservationID) {
     loadUsers(users, "user.json");
     loadData<Flight>(Flights, "Flights.json");
@@ -140,6 +136,71 @@ bool BookingAgent::bookFlight(int passengerID, string flightNumber, string seat,
     saveUsers(users, "user.json");
     return true;
 }
+
+
+
+/****************************************** Modify Reservation ******************************************/
+bool BookingAgent::modifyReservation(string reservationID, string newSeat, string newPaymentMethod, string newPaymentDetails) {
+    loadUsers(users, "user.json");
+    loadData<Flight>(Flights, "Flights.json");
+    loadData<Reservation>(reservations, "reservations.json");
+
+    // Find the reservation by ID
+    auto reservation_it = find_if(reservations.begin(), reservations.end(), [&](const shared_ptr<Reservation>& res) {
+        return res->reservationID == reservationID;
+    });
+
+    if (reservation_it == reservations.end()) {
+        cout << "Reservation ID not found" << endl;
+        return false;
+    }
+
+    // Extract flight number and passenger ID from the reservation
+    string flightNumber = (*reservation_it)->getFlightNumber();
+    int passengerID = (*reservation_it)->getPassengerID();
+
+    // Find the flight by flight number
+    auto flight_it = find_if(Flights.begin(), Flights.end(), [&](const shared_ptr<Flight>& flight) {
+        return flight->flightNumber == flightNumber;
+    });
+
+    if (flight_it == Flights.end()) {
+        cout << "Flight number not found in reservations" << endl;
+        return false;
+    }
+
+    // Validate the new seat
+    if (newSeat.length() != 3 || !isdigit(newSeat[0]) || !isdigit(newSeat[1]) || !(newSeat[2] >= 'A' && newSeat[2] <= 'F')) {
+        cout << "Invalid seat format. Seat must be in the format '12A' (two digits followed by a letter A-F)." << endl;
+        return false;
+    }
+
+    int rowNumber = stoi(newSeat.substr(0, 2));
+    if (rowNumber > (*flight_it)->total_seats) {
+        cout << "The flight does not have seats with this row number." << endl;
+        return false;
+    }
+
+    // Check if the new seat is already taken
+    auto isTaken = find_if(reservations.begin(), reservations.end(), [&](const shared_ptr<Reservation>& res) {
+        return res->getSeatNumber() == newSeat && res->getFlightNumber() == flightNumber;
+    });
+
+    if (isTaken != reservations.end()) {
+        cout << "The new seat is already taken." << endl;
+        return false;
+    }
+
+    // Update the reservation details
+    (*reservation_it)->setSeatNumber(newSeat);
+    (*reservation_it)->setPaymentMethod(newPaymentMethod);
+    (*reservation_it)->setPaymentDetails(newPaymentDetails);
+
+    // Save the updated data
+    saveData<Reservation>(reservations, "reservations.json");
+    return true;
+}
+
 
 
 /***************************************************** Cancel Reservation ******************************************************/

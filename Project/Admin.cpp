@@ -22,14 +22,41 @@ string Admin::decryptPassword(const string& encryptedPassword, const string& key
 
 
 
-/* Start of Admin User relation */
 
-// Admin logs in
+
+/******************************************* Admin log in *******************************************/
 bool Admin::Login(string userName, string password) {
     return userName == "admin" && password == "12345";
 }
 
-// Admin logs a user
+
+/******************************************* Admin logs a user in *******************************************/
+bool Admin::logUser(string userName, string password) {
+    loadUsers(users, "user.json");
+
+    auto it = find_if(users.begin(), users.end(), [&](const shared_ptr<User>& user) {
+        return user->userName == userName;
+    });
+
+    if (it != users.end()) {
+        // Decrypt the stored password
+        string decryptedPassword = decryptPassword((*it)->password);
+
+        if (decryptedPassword == password) {
+            cout << "User Logged in Successfully" << endl;
+            return true;
+        } else {
+            cout << "Wrong Password" << endl;
+            return false;
+        }
+    }
+
+    cout << "Wrong User name or Password" << endl;
+    return false;
+}
+
+
+/******************************************* Admin adds user *******************************************/
 bool Admin::addUser(string userName, string password, int user_id, string email, int loyalty_points) {
     loadUsers(users, "user.json");
 
@@ -62,8 +89,7 @@ bool Admin::addUser(string userName, string password, int user_id, string email,
 }
 
 
-
-
+/******************************************* Admin deletes user *******************************************/
 bool Admin::deleteUser(string userName) {
     loadUsers(users, "user.json");
 
@@ -80,6 +106,8 @@ bool Admin::deleteUser(string userName) {
     return false;
 }
 
+
+/******************************************* Admin updates user *******************************************/
 bool Admin::updateUser(string userName, string newPassword) {
     loadUsers(users, "user.json");
 
@@ -88,53 +116,37 @@ bool Admin::updateUser(string userName, string newPassword) {
     });
 
     if (it != users.end()) {
-        if (newPassword == (*it)->password) {
-            cout << "Enter a new password" << endl;
+        // Decrypt the current password for comparison
+        string decryptedPassword = decryptPassword((*it)->password);
+
+        if (newPassword == decryptedPassword) {
+            cout << "Enter a new password different from the current one." << endl;
             return false;
         }
 
-        (*it)->password = newPassword;
+        // Encrypt the new password before saving
+        string encryptedPassword = encryptPassword(newPassword);
+        (*it)->password = encryptedPassword;
+
         saveUsers(users, "user.json");
+        cout << "Password updated successfully!" << endl;
         return true;
     }
 
-    cout << "User name doesn't exist" << endl;
-    return false;
-}
-
-bool Admin::logUser(string userName, string password) {
-    loadUsers(users, "user.json");
-
-    auto it = find_if(users.begin(), users.end(), [&](const shared_ptr<User>& user) {
-        return user->userName == userName;
-    });
-
-    if (it != users.end()) {
-        // Decrypt the stored password
-        string decryptedPassword = decryptPassword((*it)->password);
-
-        if (decryptedPassword == password) {
-            cout << "User Logged in Successfully" << endl;
-            return true;
-        } else {
-            cout << "Wrong Password" << endl;
-            return false;
-        }
-    }
-
-    cout << "Wrong User name or Password" << endl;
+    cout << "Username doesn't exist." << endl;
     return false;
 }
 
 
-/* End of Admin User Relation*/
 
 
 
-/***************************************************  Start of Admin Flight Relation ***************************************************/
 
 
 
+
+
+/*************************************************** Admin adds Flight ***************************************************/
 bool Admin::addFlight(string flightNumber, string origin, string destination, string depratureTime, string arrivalTime, int seats, string status, double price) {
     loadData<Flight>(Flights, "Flights.json");
 
@@ -155,6 +167,8 @@ bool Admin::addFlight(string flightNumber, string origin, string destination, st
     return true;
 }
 
+
+/*************************************************** Admin updates Flight ***************************************************/
 bool Admin::updateFlight(string flightNumber, string newOrigin, string newDestination,
     string newDepartureTime, string newArrivalTime,int newSeats, string newStatus, double newPrice) {
     loadData<Flight>(Flights, "Flights.json");
@@ -181,6 +195,7 @@ bool Admin::updateFlight(string flightNumber, string newOrigin, string newDestin
 }
 
 
+/*************************************************** Admin deletes Flight ***************************************************/
 bool Admin::deleteFlight(string flightNumber) {
     // Load flights and reservations
     loadData<Flight>(Flights, "Flights.json");
@@ -233,11 +248,11 @@ bool Admin::deleteFlight(string flightNumber) {
 
 
 
-/*************************************************** End of Admin Flight Relation ***************************************************/
 
 
 
-/*************************************************** Pilot, Flight Attendants ***************************************************/
+
+/*************************************************** Admin adds Pilot ***************************************************/
 bool Admin::addPilot(string pilotName, string pilotID) {
     loadData<Pilot>(pilots, "pilots.json");
     auto it = find_if(pilots.begin(), pilots.end(), [&](const std::shared_ptr<Pilot>& p) {
@@ -257,6 +272,8 @@ bool Admin::addPilot(string pilotName, string pilotID) {
     return true;
 }
 
+
+/*************************************************** Admin adds Flight Attendant ***************************************************/
 bool Admin::addFlightAttendant(string name, string id) {
     loadData<FlightAttendant>(flightAttendants, "FlightAttendants.json");
 
@@ -276,6 +293,8 @@ bool Admin::addFlightAttendant(string name, string id) {
     saveData<FlightAttendant>(flightAttendants, "FlightAttendants.json");
     return true;
 }
+
+
 
 /*************************************************** Assigning crew to the flight ***************************************************/
 bool Admin::assignCrew(string captainID, string attendantID, string flightID) {
@@ -346,8 +365,9 @@ bool Admin::assignCrew(string captainID, string attendantID, string flightID) {
     return true;
 }
 
-/*************************************************** Add Aircrafts ***************************************************/
 
+
+/*************************************************** Add Aircrafts ***************************************************/
 bool Admin:: addAircraft(string model, string id, int capacity, double maxSpeed) {
     loadData<Aircraft>(aircrafts, "Aircrafts.json");
     /* ID should be unique */
@@ -365,8 +385,9 @@ bool Admin:: addAircraft(string model, string id, int capacity, double maxSpeed)
     return true;
 }
 
-/*************************************************** Assign  Aircrafts ***************************************************/
 
+
+/*************************************************** Assign  Aircrafts ***************************************************/
 bool Admin::assignAircraftToFlight(string aircraftID, string flightID) {
     // Load existing aircrafts and flights
     loadData<Aircraft>(aircrafts, "Aircrafts.json");
@@ -425,6 +446,8 @@ bool Admin::assignAircraftToFlight(string aircraftID, string flightID) {
 
     return true;
 }
+
+
 
 /*************************************************** Add Maintenance ***************************************************/
 bool Admin::addMaintenance(string aircraftID, string maintenanceType, string startDate, string endDate, string description, double estimatedCost) {

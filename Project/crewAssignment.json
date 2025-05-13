@@ -1,19 +1,10 @@
 [
     {
-        "attendantID": "FA123456",
-        "attendantName": "Emma",
-        "destination": "Egypt",
-        "flightNumber": "ABC123",
-        "origin": "Germany",
-        "pilotID": "P123457",
-        "pilotName": "Omar"
-    },
-    {
-        "attendantID": "FA123456",
-        "attendantName": "Emma",
-        "destination": "Spain",
+        "attendantID": "FA123457",
+        "attendantName": "Emillia",
+        "destination": "Germany",
         "flightNumber": "ABC124",
-        "origin": "London",
+        "origin": "Egypt",
         "pilotID": "P123458",
         "pilotName": "Magdy"
     }

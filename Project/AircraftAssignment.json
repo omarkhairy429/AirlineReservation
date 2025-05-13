@@ -2,8 +2,15 @@
     {
         "aircraftID": "B74801",
         "aircraftModel": "Boeing 747-8",
-        "destination": "Egypt",
+        "destination": "Kuwait",
         "flightNumber": "ABC123",
-        "origin": "Germany"
+        "origin": "Egypt"
+    },
+    {
+        "aircraftID": "B73701",
+        "aircraftModel": "Boeing 737-800",
+        "destination": "Germany",
+        "flightNumber": "ABC124",
+        "origin": "Egypt"
     }
 ]

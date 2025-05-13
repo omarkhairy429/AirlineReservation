@@ -1,26 +1,14 @@
 [
     {
-        "Available seats": 179,
-        "Price": 120.0,
-        "Revenue": 120.0,
-        "Seats": 180,
-        "arrivalTime": "2025-07-23 15:00",
-        "depratureTime": "2025-07-23 14:00",
-        "destination": "Spain",
-        "flightNumber": "ABC124",
-        "origin": "London",
-        "status": "Scheduled"
-    },
-    {
-        "Available seats": 198,
+        "Available seats": 180,
         "Price": 200.0,
-        "Revenue": 400.0,
-        "Seats": 200,
-        "arrivalTime": "2025-09-11 16:00",
-        "depratureTime": "2025-09-11 14:00",
-        "destination": "Canada",
-        "flightNumber": "ABC125",
-        "origin": "USA",
+        "Revenue": 0.0,
+        "Seats": 180,
+        "arrivalTime": "2025-08-23 16:30",
+        "depratureTime": "2025-08-23 14:00",
+        "destination": "Kuwait",
+        "flightNumber": "ABC123",
+        "origin": "Egypt",
         "status": "Scheduled"
     }
 ]

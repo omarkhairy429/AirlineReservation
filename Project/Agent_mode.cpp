@@ -13,9 +13,9 @@ void AgentMode::startAgentMode() {
 
     // Assuming a valid login check is needed here
     if (agent.Login(username, password)) {
+            cout << endl << "Login Successful" << endl << endl;
             while(true) {
             int choice;
-            cout << endl << "Login Successful" << endl << endl;
             cout << "--- Booking Agent Menu ---" << endl;
             cout << "1. Search Flights" << endl;
             cout << "2. Book a Flight" << endl;
@@ -33,8 +33,7 @@ void AgentMode::startAgentMode() {
                     bookFlight(agent);
                     break;
                 case 3:  // Modify Reservation
-                    cout << "You selected: Modify Reservation" << endl;
-                    // Call the function for modifying reservations here
+                    modifyReservation(agent);
                     break;
                 case 4:  // Cancel Reservation
                     cancelReservation(agent);
@@ -119,9 +118,33 @@ void AgentMode:: searchFlight(BookingAgent & agent) {
     cin >> origin;
     cout << "Enter Destination: ";
     cin >> destination;
-    cout << "Enter Deprature Date (YYYY-MM-DD)";
+    cout << "Enter Deprature Date (YYYY-MM-DD): ";
     cin >> depratureDate;
     agent.searchFlights(origin, destination, depratureDate);
+}
+
+/***********************************************  Option 3 Modify Reservation **********************************************/
+void AgentMode::modifyReservation(BookingAgent & agent) {
+    string reservationID, newSeat, newPaymentMethod, newPaymentDetails;
+    cout << "Enter Reservation ID: ";
+    cin >> reservationID;
+
+    cout << "Enter New Seat Number: ";
+    cin >> newSeat;
+
+    cout << "Enter New Payment Method (Credit Card/Cash/PayPal): ";
+    cin >> newPaymentMethod;
+
+    cout << "Enter New Payment Details: ";
+    cin >> newPaymentDetails;
+
+    if (agent.modifyReservation(reservationID, newSeat, newPaymentMethod, newPaymentDetails)) {
+        cout << "Reservation modified successfully!" << endl;
+        cout << "New Seat Number: " << newSeat << endl;
+        cout << "New Payment Method: " << newPaymentMethod << endl;
+    } else {
+        cout << "Failed to modify reservation. Please try again." << endl;
+    }
 }
 
 

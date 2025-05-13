@@ -23,12 +23,11 @@ class BookingAgent: public User {
         vector<shared_ptr<Flight>> Flights;
     
     public:
-
         bool Login(string userName, string password);
         bool searchFlights(string origin, string destination, string depratureDate);
         bool bookFlight(int passengerID, string flightNumber, string seat, string paymentMethod, string paymentDetails, string reservationID);
         bool cancelReservation(string reservationID);
-
+        bool modifyReservation(string reservationID, string newSeat, string newPaymentMethod, string newPaymentDetails);
 };
 
 #endif

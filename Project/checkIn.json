@@ -1,20 +1,29 @@
 [
     {
-        "departureDateTime": "2025-07-23 14:00",
-        "destination": "Spain",
-        "flightNumber": "ABC124",
-        "origin": "London",
-        "passengerName": "Omar Fayed",
+        "departureDateTime": "2025-08-23 14:00",
+        "destination": "Kuwait",
+        "flightNumber": "ABC123",
+        "origin": "Egypt",
+        "passengerName": "Omar Khairy",
         "reservationID": "R123",
         "seatNumber": "12A"
     },
     {
-        "departureDateTime": "2025-09-11 14:00",
-        "destination": "Canada",
-        "flightNumber": "ABC125",
-        "origin": "USA",
-        "passengerName": "Omar Fayed",
-        "reservationID": "R111",
-        "seatNumber": "17B"
+        "departureDateTime": "2025-10-27 15:00",
+        "destination": "Germany",
+        "flightNumber": "ABC124",
+        "origin": "Egypt",
+        "passengerName": "Omar Khairy",
+        "reservationID": "R122",
+        "seatNumber": "01A"
+    },
+    {
+        "departureDateTime": "2025-10-27 15:00",
+        "destination": "Germany",
+        "flightNumber": "ABC124",
+        "origin": "Egypt",
+        "passengerName": "Mohamed Salah",
+        "reservationID": "R100",
+        "seatNumber": "12A"
     }
 ]
